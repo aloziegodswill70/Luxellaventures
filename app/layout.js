@@ -1,8 +1,10 @@
 import "./globals.css";
 
-import BottomNav from "../components/BottomNav";
-import Footer from "../components/Footer";
-import WhatsAppFloat from "../components/WhatsAppFloat";
+import { CartProvider } from "../context/CartContext";
+
+import BottomNav from "@/components/BottomNav";
+import Footer from "@/components/Footer";
+import WhatsAppFloat from "@/components/WhatsAppFloat";
 
 /** =========================
  *  GLOBAL SEO & META CONFIG
@@ -89,12 +91,14 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className="bg-surface text-dark">
-        {children}
+        <CartProvider>
+          {children}
 
-        {/* Global Mobile App UI */}
-        <BottomNav />
-        <WhatsAppFloat />
-        <Footer />
+          {/* Global Mobile App UI */}
+          <BottomNav />
+          <WhatsAppFloat />
+          <Footer />
+        </CartProvider>
       </body>
     </html>
   );

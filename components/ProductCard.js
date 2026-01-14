@@ -1,31 +1,33 @@
-import Image from "next/image";
+"use client";
 
-export default function ProductCard() {
+import { useCart } from "@/context/CartContext";
+
+export default function ProductCard({ product }) {
+  const { addToCart, increaseQty, decreaseQty, cartItems } = useCart();
+
+  const itemInCart = cartItems.find((i) => i.id === product.id);
+
   return (
-    <div className="bg-white rounded-xl shadow-sm p-4">
-      
-      {/* Image (Desktop) */}
-      <div className="relative h-36 hidden md:block">
-            <Image
-                src="https://res.cloudinary.com/dut0fvswc/image/upload/f_auto,q_auto,w_800,c_fill/v1768260300/yam_tubers_african_market1_v0ymys.webp"
-                alt="Fresh Yam Tubers"
-                fill
-                className="object-cover"
-                placeholder="blur"
-                blurDataURL="https://res.cloudinary.com/dut0fvswc/image/upload/e_blur:300,w_20/v1768260300/yam_tubers_african_market1_v0ymys.webp"
-            />
-      </div>
+    <div className="border rounded-lg p-3">
+      <img src={product.image} alt={product.name} className="rounded" />
 
-      {/* Icon (Mobile) */}
-      <div className="text-4xl md:hidden text-center">🍗</div>
+      <h3 className="font-semibold mt-2">{product.name}</h3>
+      <p className="text-sm text-gray-600">£{product.price}</p>
 
-      <h3 className="mt-3 font-semibold">Product Name</h3>
-
-      <p className="text-sm text-gray-500">₦0.00</p>
-
-      <button className="mt-3 w-full bg-primary text-white py-2 rounded-lg">
-        ➕ Add to Cart
-      </button>
+      {!itemInCart ? (
+        <button
+          onClick={() => addToCart(product)}
+          className="mt-2 w-full bg-green-600 text-white py-2 rounded"
+        >
+          Add to cart
+        </button>
+      ) : (
+        <div className="flex items-center justify-between mt-2">
+          <button onClick={() => decreaseQty(product.id)}>➖</button>
+          <span>{itemInCart.qty}</span>
+          <button onClick={() => increaseQty(product.id)}>➕</button>
+        </div>
+      )}
     </div>
   );
 }
