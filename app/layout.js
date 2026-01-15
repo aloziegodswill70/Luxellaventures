@@ -68,20 +68,22 @@ export const metadata = {
     follow: true,
   },
 
-  viewport: {
-    width: "device-width",
-    initialScale: 1,
-    maximumScale: 1,
-  },
-
-  themeColor: "#138A36",
-
   icons: {
     icon: "/favicon.ico",
     apple: "/apple-touch-icon.png",
   },
 
   category: "Ecommerce",
+};
+
+/** =========================
+ *  VIEWPORT CONFIG (REQUIRED SEPARATELY)
+ *  ========================= */
+export const viewport = {
+  width: "device-width",
+  initialScale: 1,
+  maximumScale: 1,
+  themeColor: "#138A36",
 };
 
 /** =========================

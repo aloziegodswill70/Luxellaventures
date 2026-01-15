@@ -1,33 +1,49 @@
 "use client";
 
+import Image from "next/image";
 import { useCart } from "@/context/CartContext";
 
 export default function ProductCard({ product }) {
-  const { addToCart, increaseQty, decreaseQty, cartItems } = useCart();
+  const { addToCart, removeFromCart, cart = [] } = useCart();
 
-  const itemInCart = cartItems.find((i) => i.id === product.id);
+  const item = cart.find((i) => i.id === product.id);
+  const qty = item?.quantity || 0;
 
   return (
-    <div className="border rounded-lg p-3">
-      <img src={product.image} alt={product.name} className="rounded" />
+    <div className="bg-white rounded-xl shadow-sm p-3">
+      <div className="relative aspect-square rounded-lg overflow-hidden">
+        <Image
+          src={product.image}
+          alt={product.name}
+          fill
+          className="object-cover"
+        />
+      </div>
 
-      <h3 className="font-semibold mt-2">{product.name}</h3>
-      <p className="text-sm text-gray-600">£{product.price}</p>
+      <h3 className="mt-2 text-sm font-semibold">{product.name}</h3>
+      <p className="text-xs text-gray-500">{product.description}</p>
 
-      {!itemInCart ? (
-        <button
-          onClick={() => addToCart(product)}
-          className="mt-2 w-full bg-green-600 text-white py-2 rounded"
-        >
-          Add to cart
-        </button>
-      ) : (
-        <div className="flex items-center justify-between mt-2">
-          <button onClick={() => decreaseQty(product.id)}>➖</button>
-          <span>{itemInCart.qty}</span>
-          <button onClick={() => increaseQty(product.id)}>➕</button>
+      <div className="flex items-center justify-between mt-2">
+        <span className="font-bold text-green-700">
+          £{product.price}
+        </span>
+
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => removeFromCart(product)}
+            className="w-7 h-7 rounded-full bg-gray-200"
+          >
+            −
+          </button>
+          <span className="text-sm">{qty}</span>
+          <button
+            onClick={() => addToCart(product)}
+            className="w-7 h-7 rounded-full bg-green-600 text-white"
+          >
+            +
+          </button>
         </div>
-      )}
+      </div>
     </div>
   );
 }

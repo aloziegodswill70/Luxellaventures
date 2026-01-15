@@ -1,18 +1,22 @@
 import InfoHeader from "@/components/InfoHeader";
 import Navbar from "@/components/Navbar";
 import HeroCategories from "@/components/HeroCategories";
+import ProductGrid from "@/components/ProductGrid";
 
 export default function Home() {
   return (
-    <>
+    <main className="pb-20">
+      {/* Top info strip */}
       <InfoHeader />
+
+      {/* Main navbar (icons) */}
       <Navbar />
+
+      {/* Category hero slider */}
       <HeroCategories />
 
-      {/* Product Section placeholder */}
-      <section className="px-4 py-10 text-center text-gray-500">
-        🛒 Products coming next
-      </section>
-    </>
+      {/* Products */}
+      <ProductGrid />
+    </main>
   );
 }
