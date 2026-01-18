@@ -1,22 +1,34 @@
+"use client";
+
+import { useState } from "react";
 import InfoHeader from "@/components/InfoHeader";
 import Navbar from "@/components/Navbar";
 import HeroCategories from "@/components/HeroCategories";
+import FilterBar from "@/components/FilterBar";
 import ProductGrid from "@/components/ProductGrid";
 
 export default function Home() {
-  return (
-    <main className="pb-20">
-      {/* Top info strip */}
-      <InfoHeader />
+  const [category, setCategory] = useState("all");
+  const [search, setSearch] = useState("");
+  const [sort, setSort] = useState("");
 
-      {/* Main navbar (icons) */}
+  return (
+    <>
+      <InfoHeader />
       <Navbar />
 
-      {/* Category hero slider */}
-      <HeroCategories />
+      <HeroCategories
+        activeCategory={category}
+        onSelectCategory={setCategory}
+      />
 
-      {/* Products */}
-      <ProductGrid />
-    </main>
+      <FilterBar search={search} sort={sort} />
+
+      <ProductGrid
+        category={category}
+        search={search}
+        sort={sort}
+      />
+    </>
   );
 }

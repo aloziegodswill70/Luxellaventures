@@ -4,10 +4,15 @@ import Image from "next/image";
 import { useCart } from "@/context/CartContext";
 
 export default function ProductCard({ product }) {
-  const { addToCart, removeFromCart, cart = [] } = useCart();
+  const { cartItems, addToCart, removeFromCart, setIsCartOpen } = useCart();
 
-  const item = cart.find((i) => i.id === product.id);
-  const qty = item?.quantity || 0;
+  const item = cartItems.find((i) => i.id === product.id);
+  const qty = item?.qty || 0;
+
+  const handleAdd = () => {
+    addToCart(product);
+    setIsCartOpen(true); // 🔥 AUTO OPEN
+  };
 
   return (
     <div className="bg-white rounded-xl shadow-sm p-3">
@@ -21,23 +26,23 @@ export default function ProductCard({ product }) {
       </div>
 
       <h3 className="mt-2 text-sm font-semibold">{product.name}</h3>
-      <p className="text-xs text-gray-500">{product.description}</p>
 
-      <div className="flex items-center justify-between mt-2">
-        <span className="font-bold text-green-700">
-          £{product.price}
-        </span>
+      <div className="flex justify-between items-center mt-2">
+        <span className="font-bold text-green-700">£{product.price}</span>
 
         <div className="flex items-center gap-2">
           <button
-            onClick={() => removeFromCart(product)}
+            onClick={() => removeFromCart(product.id)}
+            disabled={qty === 0}
             className="w-7 h-7 rounded-full bg-gray-200"
           >
             −
           </button>
-          <span className="text-sm">{qty}</span>
+
+          <span>{qty}</span>
+
           <button
-            onClick={() => addToCart(product)}
+            onClick={handleAdd}
             className="w-7 h-7 rounded-full bg-green-600 text-white"
           >
             +

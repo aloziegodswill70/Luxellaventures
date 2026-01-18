@@ -5,6 +5,7 @@ import { CartProvider } from "../context/CartContext";
 import BottomNav from "@/components/BottomNav";
 import Footer from "@/components/Footer";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
+import CartDrawer from "@/components/CartDrawer";
 
 /** =========================
  *  GLOBAL SEO & META CONFIG
@@ -45,10 +46,10 @@ export const metadata = {
     siteName: "Luxella Ventures",
     images: [
       {
-        url: "/og-image.jpg", // add later
-        width: 1200,
-        height: 630,
-        alt: "Luxella Ventures African Food Store",
+        url: "/images/luxellalogo.jpeg",
+        width: 800,
+        height: 800,
+        alt: "Luxella Ventures Logo",
       },
     ],
     locale: "en_GB",
@@ -60,7 +61,7 @@ export const metadata = {
     title: "Luxella Ventures | African Food Store",
     description:
       "Fresh African food products delivered with care. Shop frozen proteins, tubers, peppers & grains.",
-    images: ["/og-image.jpg"],
+    images: ["/luxellalogo.jpeg"],
   },
 
   robots: {
@@ -69,15 +70,15 @@ export const metadata = {
   },
 
   icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
+    icon: "/luxellalogo.jpeg",
+    apple: "/luxellalogo.jpeg",
   },
 
   category: "Ecommerce",
 };
 
 /** =========================
- *  VIEWPORT CONFIG (REQUIRED SEPARATELY)
+ *  VIEWPORT CONFIG
  *  ========================= */
 export const viewport = {
   width: "device-width",
@@ -96,7 +97,10 @@ export default function RootLayout({ children }) {
         <CartProvider>
           {children}
 
-          {/* Global Mobile App UI */}
+          {/* 🔥 Global Cart Drawer */}
+          <CartDrawer />
+
+          {/* Global UI Elements */}
           <BottomNav />
           <WhatsAppFloat />
           <Footer />
