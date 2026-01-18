@@ -4,12 +4,11 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import CartBadge from "./CartBadge";
+import { useCart } from "@/context/CartContext";
 
 export default function BottomNav() {
   const pathname = usePathname();
-
-  // TEMP cart count (replace later with context)
-  const cartCount = 3;
+  const { cartCount, setIsCartOpen } = useCart();
 
   const [show, setShow] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
@@ -31,26 +30,19 @@ export default function BottomNav() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
-  const navItem = (href, icon, isCart = false) => {
+  const navLink = (href, icon, label) => {
     const isActive = pathname === href;
 
     return (
       <Link
         href={href}
         className={`relative flex flex-col items-center justify-center
-          transition-all duration-200
-          ${isActive
-            ? "text-green-600 scale-110"
-            : "text-gray-500 active:scale-95"
-          }
-        `}
+          ${isActive ? "text-green-600 scale-110" : "text-gray-500"}
+          active:scale-95 transition`}
       >
         <span className="text-2xl">{icon}</span>
-
-        {isCart && <CartBadge count={cartCount} />}
-
         {isActive && (
-          <span className="w-1.5 h-1.5 bg-green-600 rounded-full mt-1"></span>
+          <span className="w-1.5 h-1.5 bg-green-600 rounded-full mt-1" />
         )}
       </Link>
     );
@@ -65,11 +57,44 @@ export default function BottomNav() {
     >
       <div className="flex justify-around items-center h-16">
 
-        {navItem("/", "🏠")}
-        {navItem("/categories", "📦")}
-        {navItem("/shop", "🛍")}
-        {navItem("/cart", "🛒", true)}
-        {navItem("/account", "👤")}
+        {/* Home */}
+        {navLink("/", "🏠")}
+
+        {/* Categories (homepage) */}
+        <button
+          onClick={() =>
+            document
+              .querySelector("#categories")
+              ?.scrollIntoView({ behavior: "smooth" })
+          }
+          className="flex flex-col items-center text-gray-500 active:scale-95 transition"
+        >
+          <span className="text-2xl">📦</span>
+        </button>
+
+        {/* Shop (products grid on homepage) */}
+        <button
+          onClick={() =>
+            document
+              .querySelector("#products")
+              ?.scrollIntoView({ behavior: "smooth" })
+          }
+          className="flex flex-col items-center text-gray-500 active:scale-95 transition"
+        >
+          <span className="text-2xl">🛍</span>
+        </button>
+
+        {/* Cart (opens drawer) */}
+        <button
+          onClick={() => setIsCartOpen(true)}
+          className="relative flex flex-col items-center text-gray-500 active:scale-95 transition"
+        >
+          <span className="text-2xl">🛒</span>
+          {cartCount > 0 && <CartBadge count={cartCount} />}
+        </button>
+
+        {/* Account */}
+        {navLink("/login", "👤")}
 
       </div>
     </div>

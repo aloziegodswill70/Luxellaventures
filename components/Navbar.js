@@ -38,7 +38,7 @@ export default function Navbar() {
       <Link
         href={href}
         className={`flex flex-col items-center ${
-          isActive ? "text-green-600" : "text-gray-700"
+          isActive ? "text-orange-500" : "text-gray-700"
         }`}
       >
         <span className="text-xl">{icon}</span>
@@ -47,10 +47,10 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="sticky top-0 bg-white border-b z-40">
+    <nav className="fixed top-0 left-0 w-full bg-white border-b z-[999]">
       <div className="flex justify-between items-center px-4 h-14 relative">
 
-        {/* ☰ MENU WITH DROPDOWN */}
+        {/* ☰ MENU */}
         <div className="relative">
           <button
             onClick={() => setMenuOpen((prev) => !prev)}
@@ -60,7 +60,7 @@ export default function Navbar() {
           </button>
 
           {menuOpen && (
-            <div className="absolute left-0 top-12 bg-white border rounded-lg shadow-md w-48 z-50">
+            <div className="absolute left-0 top-12 bg-white border rounded-lg shadow-lg w-48 z-[1000]">
               {categories.map((cat) => (
                 <Link
                   key={cat.slug}
@@ -74,44 +74,22 @@ export default function Navbar() {
 
               <div className="border-t my-1" />
 
-              {/* Extra Links */}
-              <Link
-                href="/search"
-                className="block px-4 py-2 text-sm hover:bg-gray-100"
-                onClick={() => setMenuOpen(false)}
-              >
+              <Link href="/search" className="block px-4 py-2 text-sm hover:bg-gray-100">
                 🔍 Search
               </Link>
-
-              <Link
-                href="/offers"
-                className="block px-4 py-2 text-sm hover:bg-gray-100"
-                onClick={() => setMenuOpen(false)}
-              >
+              <Link href="/offers" className="block px-4 py-2 text-sm hover:bg-gray-100">
                 ⭐ Offers
               </Link>
-
-              <Link
-                href="/login"
-                className="block px-4 py-2 text-sm hover:bg-gray-100"
-                onClick={() => setMenuOpen(false)}
-              >
+              <Link href="/login" className="block px-4 py-2 text-sm hover:bg-gray-100">
                 👤 Account
               </Link>
             </div>
           )}
         </div>
 
-        {/* SEARCH ICON */}
         {navItem("/search", "🔍")}
-
-        {/* CART ICON */}
         {navItem("/cart", "🛒", true)}
-
-        {/* ACCOUNT ICON */}
         {navItem("/login", "👤")}
-
-        {/* OFFERS ICON */}
         {navItem("/offers", "⭐")}
       </div>
     </nav>

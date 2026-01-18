@@ -6,6 +6,7 @@ import Navbar from "@/components/Navbar";
 import HeroCategories from "@/components/HeroCategories";
 import FilterBar from "@/components/FilterBar";
 import ProductGrid from "@/components/ProductGrid";
+import { Suspense } from "react";
 
 export default function Home() {
   const [category, setCategory] = useState("all");
@@ -16,7 +17,7 @@ export default function Home() {
     <>
       <InfoHeader />
       <Navbar />
-
+      <Suspense fallback={null}>
       <HeroCategories
         activeCategory={category}
         onSelectCategory={setCategory}
@@ -29,6 +30,7 @@ export default function Home() {
         search={search}
         sort={sort}
       />
+       </Suspense>
     </>
   );
 }
