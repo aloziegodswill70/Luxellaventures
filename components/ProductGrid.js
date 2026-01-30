@@ -1,30 +1,22 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
 import { useMemo } from "react";
 import ProductCard from "./ProductCard";
 import { products } from "@/data/products";
-import { slugify } from "@/utils/categorySlug";
 
-export default function ProductGrid() {
-  const params = useSearchParams();
-
-  const category = params.get("category") || "all";
-  const search = params.get("search") || "";
-  const sort = params.get("sort") || "";
-
+export default function ProductGrid({ category, search, sort }) {
   const filteredProducts = useMemo(() => {
     let list = [...products];
 
     // ✅ Category filter
-    if (category !== "all") {
+    if (category && category !== "all") {
       list = list.filter(
-        (p) => slugify(p.category) === category
+        (p) => p.category === category
       );
     }
 
     // ✅ Search filter
-    if (search.trim()) {
+    if (search?.trim()) {
       const q = search.toLowerCase();
       list = list.filter((p) =>
         p.name.toLowerCase().includes(q)
@@ -62,7 +54,10 @@ export default function ProductGrid() {
           "
         >
           {filteredProducts.map((product) => (
-            <ProductCard key={product.id} product={product} />
+            <ProductCard
+              key={product.id}
+              product={product}
+            />
           ))}
         </div>
       )}

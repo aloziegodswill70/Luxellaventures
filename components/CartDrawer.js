@@ -1,6 +1,7 @@
 "use client";
 
 import { useCart } from "@/context/CartContext";
+import Link from "next/link";
 
 export default function CartDrawer() {
   const {
@@ -12,14 +13,16 @@ export default function CartDrawer() {
     removeFromCart,
   } = useCart();
 
-  /* ---------------- WHATSAPP MESSAGE ---------------- */
+  /* ---------------- WHATSAPP MESSAGE (OPTIONAL FALLBACK) ---------------- */
   const whatsappMessage = `
 Hello, I want to order:
 
 ${cartItems
   .map(
     (item) =>
-      `• ${item.name} (x${item.qty}) – £${item.price * item.qty}`
+      `• ${item.name} (x${item.qty}) – £${(
+        item.price * item.qty
+      ).toFixed(2)}`
   )
   .join("\n")}
 
@@ -47,8 +50,13 @@ Total: £${cartTotal.toFixed(2)}
       >
         {/* Header */}
         <div className="flex justify-between items-center p-4 border-b">
-          <h2 className="font-bold">Your Cart</h2>
-          <button onClick={() => setIsCartOpen(false)}>✕</button>
+          <h2 className="font-bold text-lg">Your Cart</h2>
+          <button
+            onClick={() => setIsCartOpen(false)}
+            className="text-xl"
+          >
+            ✕
+          </button>
         </div>
 
         {/* Cart Items */}
@@ -60,10 +68,15 @@ Total: £${cartTotal.toFixed(2)}
           )}
 
           {cartItems.map((item) => (
-            <div key={item.id} className="flex justify-between items-center">
+            <div
+              key={item.id}
+              className="flex justify-between items-center"
+            >
               <div>
                 <p className="font-medium text-sm">{item.name}</p>
-                <p className="text-xs text-gray-500">£{item.price}</p>
+                <p className="text-xs text-gray-500">
+                  £{item.price.toFixed(2)}
+                </p>
               </div>
 
               <div className="flex items-center gap-2">
@@ -74,11 +87,13 @@ Total: £${cartTotal.toFixed(2)}
                   −
                 </button>
 
-                <span className="text-sm font-semibold">{item.qty}</span>
+                <span className="text-sm font-semibold">
+                  {item.qty}
+                </span>
 
                 <button
                   onClick={() => addToCart(item)}
-                  className="w-6 h-6 bg-green-600 text-white rounded"
+                  className="w-6 h-6 bg-orange-500 text-white rounded"
                 >
                   +
                 </button>
@@ -94,14 +109,26 @@ Total: £${cartTotal.toFixed(2)}
             <span>£{cartTotal.toFixed(2)}</span>
           </div>
 
+          {/* STRIPE CHECKOUT */}
+          {cartItems.length > 0 && (
+            <Link
+              href="/checkout"
+              onClick={() => setIsCartOpen(false)}
+              className="block w-full text-center bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg font-semibold transition"
+            >
+              Proceed to Checkout
+            </Link>
+          )}
+
+          {/* WHATSAPP FALLBACK */}
           {cartItems.length > 0 && (
             <a
               href={whatsappLink}
               target="_blank"
               rel="noopener noreferrer"
-              className="block w-full text-center bg-green-600 text-white py-3 rounded-lg font-semibold active:scale-95 transition"
+              className="block w-full text-center border border-green-600 text-green-600 py-3 rounded-lg font-semibold"
             >
-              Place Order on WhatsApp
+              Order via WhatsApp
             </a>
           )}
         </div>
