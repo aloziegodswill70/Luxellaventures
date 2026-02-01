@@ -18,13 +18,13 @@ export default function CheckoutItem({ item }) {
         <div>
           <p className="font-medium text-sm">{item.name}</p>
           <p className="text-xs text-gray-500">
-            ₦{item.price.toLocaleString()} × {item.qty}
+            £{item.price.toLocaleString()} × {item.qty}
           </p>
         </div>
       </div>
 
       <p className="font-semibold text-sm">
-        ₦{(item.price * item.qty).toLocaleString()}
+        £{(item.price * item.qty).toLocaleString()}
       </p>
     </div>
   );

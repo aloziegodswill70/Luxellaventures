@@ -7,6 +7,8 @@ import { useState } from "react";
 export default function CheckoutPage() {
   const { cartItems, cartTotal } = useCart();
 
+  const [loading, setLoading] = useState(false);
+
   const [form, setForm] = useState({
     name: "",
     phone: "",
@@ -18,11 +20,50 @@ export default function CheckoutPage() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  /* ===============================
+     STRIPE CHECKOUT
+  =============================== */
+  const handleStripeCheckout = async () => {
+    if (!form.name || !form.phone || !form.address) {
+      alert("Please fill in delivery information");
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const res = await fetch("/api/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          cartItems,
+          customer: form,
+        }),
+      });
+
+      const data = await res.json();
+
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        alert("Payment initialization failed");
+        setLoading(false);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Something went wrong");
+      setLoading(false);
+    }
+  };
+
+  /* ===============================
+     WHATSAPP FALLBACK
+  =============================== */
   const whatsappOrder = () => {
     const itemsText = cartItems
       .map(
         (i) =>
-          `${i.name} x${i.qty} = ₦${(
+          `${i.name} x${i.qty} = £${(
             i.price * i.qty
           ).toLocaleString()}`
       )
@@ -34,7 +75,7 @@ Name: ${form.name}%0A
 Phone: ${form.phone}%0A
 Address: ${form.address}%0A
 %0AOrder:%0A${itemsText}%0A
-%0ATotal: ₦${cartTotal.toLocaleString()}
+%0ATotal: £${cartTotal.toLocaleString()}
     `;
 
     window.open(
@@ -115,14 +156,16 @@ Address: ${form.address}%0A
 
         <div className="flex justify-between font-semibold text-lg mb-6">
           <span>Total</span>
-          <span>₦{cartTotal.toLocaleString()}</span>
+          <span>£{cartTotal.toLocaleString()}</span>
         </div>
 
-        {/* PAYSTACK PLACEHOLDER */}
+        {/* STRIPE PAYMENT */}
         <button
-          className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg font-semibold mb-3"
+          onClick={handleStripeCheckout}
+          disabled={loading}
+          className="w-full bg-black hover:bg-gray-900 text-white py-3 rounded-lg font-semibold mb-3 disabled:opacity-50"
         >
-          Pay Now
+          {loading ? "Redirecting..." : "Pay with Card"}
         </button>
 
         {/* WHATSAPP FALLBACK */}
