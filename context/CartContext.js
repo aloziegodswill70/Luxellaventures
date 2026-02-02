@@ -7,6 +7,8 @@ const CartContext = createContext();
 export function CartProvider({ children }) {
   const [cartItems, setCartItems] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
+  const [hasCleared, setHasCleared] = useState(false); // 🔐 guard flag
 
   /* ---------------- ADD TO CART ---------------- */
   const addToCart = (product) => {
@@ -34,23 +36,50 @@ export function CartProvider({ children }) {
     );
   };
 
+  /* ---------------- CLEAR CART (STRIPE SUCCESS) ---------------- */
+  const clearCart = () => {
+    setCartItems([]);
+    setIsCartOpen(false);
+    setIsCheckingOut(false);
+    setHasCleared(true);
+
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("luxella-cart");
+    }
+  };
+
   /* ---------------- DERIVED VALUES ---------------- */
-  const cartCount = cartItems.reduce((sum, item) => sum + item.qty, 0);
+  const cartCount = cartItems.reduce(
+    (sum, item) => sum + item.qty,
+    0
+  );
 
   const cartTotal = cartItems.reduce(
     (sum, item) => sum + item.price * item.qty,
     0
   );
 
-  /* ---------------- LOCAL STORAGE ---------------- */
+  /* ---------------- LOAD FROM STORAGE ---------------- */
   useEffect(() => {
+    if (typeof window === "undefined") return;
+
     const saved = localStorage.getItem("luxella-cart");
-    if (saved) setCartItems(JSON.parse(saved));
+    if (saved) {
+      setCartItems(JSON.parse(saved));
+    }
   }, []);
 
+  /* ---------------- SAVE TO STORAGE ---------------- */
   useEffect(() => {
-    localStorage.setItem("luxella-cart", JSON.stringify(cartItems));
-  }, [cartItems]);
+    if (hasCleared) return; // 🚫 prevents cart resurrection
+
+    if (typeof window !== "undefined") {
+      localStorage.setItem(
+        "luxella-cart",
+        JSON.stringify(cartItems)
+      );
+    }
+  }, [cartItems, hasCleared]);
 
   return (
     <CartContext.Provider
@@ -60,8 +89,11 @@ export function CartProvider({ children }) {
         cartTotal,
         isCartOpen,
         setIsCartOpen,
+        isCheckingOut,
+        setIsCheckingOut,
         addToCart,
         removeFromCart,
+        clearCart,
       }}
     >
       {children}

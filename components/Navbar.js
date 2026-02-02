@@ -2,20 +2,22 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import CartBadge from "./CartBadge";
 import { useCart } from "@/context/CartContext";
 
 const categories = [
-  { name: "Frozen Foods", slug: "frozen" },
-  { name: "Proteins", slug: "proteins" },
+  { name: "Plantain", slug: "plantain" },
   { name: "Tubers", slug: "tubers" },
   { name: "Grains", slug: "grains" },
+  { name: "Proteins", slug: "proteins" },
   { name: "Peppers", slug: "peppers" },
+  { name: "Frozen Foods", slug: "frozen" },
 ];
 
 export default function Navbar() {
   const pathname = usePathname();
+  const router = useRouter();
   const { cartCount, setIsCartOpen } = useCart();
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -46,6 +48,11 @@ export default function Navbar() {
     );
   };
 
+  const handleCategoryClick = (slug) => {
+    setMenuOpen(false);
+    router.push(`/?category=${slug}`);
+  };
+
   return (
     <nav className="fixed top-0 left-0 w-full bg-white border-b z-[999]">
       <div className="flex justify-between items-center px-4 h-14 relative">
@@ -62,14 +69,13 @@ export default function Navbar() {
           {menuOpen && (
             <div className="absolute left-0 top-12 bg-white border rounded-lg shadow-lg w-48 z-[1000]">
               {categories.map((cat) => (
-                <Link
+                <button
                   key={cat.slug}
-                  href={`/?category=${cat.slug}`}
-                  className="block px-4 py-2 text-sm hover:bg-gray-100"
-                  onClick={() => setMenuOpen(false)}
+                  onClick={() => handleCategoryClick(cat.slug)}
+                  className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
                 >
                   {cat.name}
-                </Link>
+                </button>
               ))}
 
               <div className="border-t my-1" />

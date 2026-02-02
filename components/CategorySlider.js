@@ -77,7 +77,7 @@ export default function CategorySlider({ active, onSelect }) {
               <Image
                 src={
                   cat === "all"
-                    ? "/images/all-products.jpg" // 👈 add a nice generic image
+                    ? "/images/luxellalogo.jpeg" // 👈 add a nice generic image
                     : categoryMap[cat]
                 }
                 alt={cat}

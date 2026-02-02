@@ -39,7 +39,7 @@ const categories = [
   {
     name: "All",
     value: "all",
-    img: "https://res.cloudinary.com/dut0fvswc/image/upload/v1768260300/yam1_wlyvtp.jpg",
+    img: "/images/luxellalogo.jpeg",
   },
   ...Array.from(new Set(products.map((p) => p.category))).map((cat) => ({
     name: cat,
