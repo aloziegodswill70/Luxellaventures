@@ -7,6 +7,9 @@ const nextConfig = {
         hostname: "res.cloudinary.com",
       },
     ],
+
+    // ✅ Stop timeouts locally (Vercel/production still optimizes)
+    unoptimized: process.env.NODE_ENV === "development",
   },
 };
 

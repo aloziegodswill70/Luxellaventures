@@ -4,23 +4,45 @@ import { useMemo } from "react";
 import ProductCard from "./ProductCard";
 import { products } from "@/data/products";
 
+const SPICE_KEYWORDS = [
+  "spice",
+  "thyme",
+  "prekese",
+  "achi",
+  "uziza",
+  "ogiri",
+  "egusi",
+  "prawns",
+  "dawadawa",
+  "iru",
+  "ginger",
+  "garlic",
+  "pepper soup",
+];
+
 export default function ProductGrid({ category, search, sort }) {
   const filteredProducts = useMemo(() => {
     let list = [...products];
 
     // ✅ Category filter
     if (category && category !== "all") {
-      list = list.filter(
-        (p) => p.category === category
-      );
+      if (category === "Spices") {
+        list = list.filter((p) => {
+          const text = `${p.id || ""} ${p.name || ""}`.toLowerCase();
+          return SPICE_KEYWORDS.some((k) => text.includes(k));
+        });
+      } else {
+        list = list.filter((p) => p.category === category);
+      }
     }
 
     // ✅ Search filter
     if (search?.trim()) {
       const q = search.toLowerCase();
-      list = list.filter((p) =>
-        p.name.toLowerCase().includes(q)
-      );
+      list = list.filter((p) => {
+        const text = `${p.name || ""} ${p.category || ""}`.toLowerCase();
+        return text.includes(q);
+      });
     }
 
     // ✅ Sorting
@@ -36,11 +58,9 @@ export default function ProductGrid({ category, search, sort }) {
   }, [category, search, sort]);
 
   return (
-    <section className="px-3 py-4">
+    <section className="px-3 py-4" id="products">
       {filteredProducts.length === 0 ? (
-        <p className="text-center text-gray-500 py-10">
-          No products found.
-        </p>
+        <p className="text-center text-gray-500 py-10">No products found.</p>
       ) : (
         <div
           className="
@@ -54,10 +74,7 @@ export default function ProductGrid({ category, search, sort }) {
           "
         >
           {filteredProducts.map((product) => (
-            <ProductCard
-              key={product.id}
-              product={product}
-            />
+            <ProductCard key={product.id} product={product} />
           ))}
         </div>
       )}

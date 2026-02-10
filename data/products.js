@@ -8,6 +8,7 @@ export const products = [
     price: 12.5,
     unit: "per box",
     category: "Vegetables",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346949/tomato_ibeo8v.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346949/tomato_ibeo8v.png",
   },
   {
@@ -16,6 +17,7 @@ export const products = [
     price: 10,
     unit: "per box",
     category: "Vegetables",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346921/onion_f1njng.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346921/onion_f1njng.png",
   },
 
@@ -26,6 +28,7 @@ export const products = [
     price: 25,
     unit: "per box",
     category: "Pepper",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346941/scotchbonnetpepper_qujlsr.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346941/scotchbonnetpepper_qujlsr.png",
   },
   {
@@ -34,6 +37,7 @@ export const products = [
     price: 14,
     unit: "per box",
     category: "Pepper",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346928/redlongpepper_ne8w4h.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346928/redlongpepper_ne8w4h.png",
   },
   {
@@ -42,6 +46,7 @@ export const products = [
     price: 14,
     unit: "per box",
     category: "Pepper",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346927/redcappepper_afim6k.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346927/redcappepper_afim6k.png",
   },
   {
@@ -50,6 +55,7 @@ export const products = [
     price: 15,
     unit: "per box",
     category: "Pepper",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346909/greenbellpepper_bchawq.jpg"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346909/greenbellpepper_bchawq.jpg",
   },
   {
@@ -58,6 +64,7 @@ export const products = [
     price: 15,
     unit: "per box",
     category: "Pepper",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346895/bellpepper_psbepg.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346895/bellpepper_psbepg.png",
   },
   {
@@ -66,6 +73,7 @@ export const products = [
     price: 30,
     unit: "per box",
     category: "Pepper",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346950/ugandapepper_jlfqqt.jpg"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346950/ugandapepper_jlfqqt.jpg",
   },
 
@@ -76,6 +84,7 @@ export const products = [
     price: 11,
     unit: "per bag",
     category: "Fish",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346965/wholetilapia_qkt6vg.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346965/wholetilapia_qkt6vg.png",
   },
   {
@@ -84,6 +93,7 @@ export const products = [
     price: 11,
     unit: "per bag",
     category: "Fish",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346947/tilapiasteak_pnu6vf.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346947/tilapiasteak_pnu6vf.png",
   },
   {
@@ -92,6 +102,7 @@ export const products = [
     price: 5.5,
     unit: "per kg",
     category: "Fish",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346910/hakefish_oowxwx.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346910/hakefish_oowxwx.png",
   },
   {
@@ -100,6 +111,7 @@ export const products = [
     price: 11,
     unit: "per bag",
     category: "Fish",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346900/driedcatfish_mxge9j.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346900/driedcatfish_mxge9j.png",
   },
 
@@ -110,6 +122,7 @@ export const products = [
     price: 11,
     unit: "per bag",
     category: "Frozen Protein",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346902/descaledtilapia_zctwdd.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346902/descaledtilapia_zctwdd.png",
   },
   {
@@ -118,6 +131,7 @@ export const products = [
     price: 11,
     unit: "per bag",
     category: "Frozen Protein",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346901/frozencatfish_vmko33.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346901/frozencatfish_vmko33.png",
   },
   {
@@ -126,6 +140,7 @@ export const products = [
     price: 5,
     unit: "per pack",
     category: "Frozen Protein",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346901/frozenfish_b02yqa.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346901/frozenfish_b02yqa.png",
   },
   {
@@ -134,6 +149,7 @@ export const products = [
     price: 11,
     unit: "per bag",
     category: "Frozen Protein",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346899/catfishpieces_fqrqun.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346899/catfishpieces_fqrqun.png",
   },
   {
@@ -142,6 +158,7 @@ export const products = [
     price: 4.99,
     unit: "per kg",
     category: "Frozen Protein",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346908/gizzard_ufst5v.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346908/gizzard_ufst5v.png",
   },
   {
@@ -150,6 +167,7 @@ export const products = [
     price: 4,
     unit: "per kg",
     category: "Frozen Protein",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346896/abodi_ko1dml.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346896/abodi_ko1dml.png",
   },
 
@@ -160,6 +178,7 @@ export const products = [
     price: 5,
     unit: "per kg",
     category: "Protein",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346949/turkeymidwing_zeyel2.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346949/turkeymidwing_zeyel2.png",
   },
   {
@@ -168,6 +187,7 @@ export const products = [
     price: 9.5,
     unit: "per kg",
     category: "Protein",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346898/beef_w5m7xr.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346898/beef_w5m7xr.png",
   },
   {
@@ -176,6 +196,7 @@ export const products = [
     price: 9.5,
     unit: "per kg",
     category: "Protein",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346936/sheinbeef_plrlkz.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346936/sheinbeef_plrlkz.png",
   },
   {
@@ -184,6 +205,7 @@ export const products = [
     price: 13,
     unit: "per kg",
     category: "Protein",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346918/nigeriangoatmeat_rlkfaj.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346918/nigeriangoatmeat_rlkfaj.png",
   },
   {
@@ -192,6 +214,7 @@ export const products = [
     price: 4,
     unit: "per kg",
     category: "Protein",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346928/ponmo_aecvth.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346928/ponmo_aecvth.png",
   },
   {
@@ -200,6 +223,7 @@ export const products = [
     price: 4,
     unit: "per kg",
     category: "Protein",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346935/shaki_omaasb.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346935/shaki_omaasb.png",
   },
   {
@@ -208,6 +232,7 @@ export const products = [
     price: 6.5,
     unit: "per kg",
     category: "Protein",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346916/honeycombshaki_cmcdrg.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346916/honeycombshaki_cmcdrg.png",
   },
 
@@ -218,6 +243,7 @@ export const products = [
     price: 33,
     unit: "per bag",
     category: "Chicken",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346928/pluverahardchicken_tsxa5k.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346928/pluverahardchicken_tsxa5k.png",
   },
   {
@@ -226,6 +252,7 @@ export const products = [
     price: 28,
     unit: "per bag",
     category: "Chicken",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346918/jollyhardchicken_mfkedk.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346918/jollyhardchicken_mfkedk.png",
   },
 
@@ -236,6 +263,7 @@ export const products = [
     price: 35,
     unit: "20kg",
     category: "Garri",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346917/ijebugarri_qp2i6a.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346917/ijebugarri_qp2i6a.png",
   },
   {
@@ -244,6 +272,7 @@ export const products = [
     price: 35,
     unit: "20kg",
     category: "Garri",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346965/yellowijebugarri_p2yuee.jpg"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346965/yellowijebugarri_p2yuee.jpg",
   },
   {
@@ -252,6 +281,7 @@ export const products = [
     price: 35,
     unit: "20kg",
     category: "Garri",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346959/whitegarri_spbpxu.jpg"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346959/whitegarri_spbpxu.jpg",
   },
   {
@@ -260,6 +290,7 @@ export const products = [
     price: 35,
     unit: "20kg",
     category: "Garri",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346959/whitepackagegarri_ooucxn.webp"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346959/whitepackagegarri_ooucxn.webp",
   },
 
@@ -270,6 +301,7 @@ export const products = [
     price: 4.99,
     unit: "per kg",
     category: "Grains",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346899/beans_cbdkke.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346899/beans_cbdkke.png",
   },
   {
@@ -278,6 +310,7 @@ export const products = [
     price: 4.99,
     unit: "per kg",
     category: "Grains",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346898/brownbeans_zlvagh.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346898/brownbeans_zlvagh.png",
   },
   {
@@ -286,6 +319,7 @@ export const products = [
     price: 4.99,
     unit: "per kg",
     category: "Grains",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346897/blackeyebeans_n0vh0s.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346897/blackeyebeans_n0vh0s.png",
   },
   {
@@ -294,6 +328,7 @@ export const products = [
     price: 5,
     unit: "per kg",
     category: "Grains",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346915/honeybeans_m7bpcj.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346915/honeybeans_m7bpcj.png",
   },
 
@@ -304,6 +339,7 @@ export const products = [
     price: 34,
     unit: "per box",
     category: "Yam",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346958/wateryam_tmrjjb.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346958/wateryam_tmrjjb.png",
   },
   {
@@ -312,6 +348,7 @@ export const products = [
     price: 34,
     unit: "per box",
     category: "Yam",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346942/sweetyam_yfq1vs.jpg"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346942/sweetyam_yfq1vs.jpg",
   },
   {
@@ -320,6 +357,7 @@ export const products = [
     price: 34,
     unit: "per box",
     category: "Yam",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346901/freshuncutyam_sf0rba.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346901/freshuncutyam_sf0rba.png",
   },
   {
@@ -328,6 +366,7 @@ export const products = [
     price: 34,
     unit: "per box",
     category: "Yam",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346899/cutyam_fuydzr.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346899/cutyam_fuydzr.png",
   },
   {
@@ -336,6 +375,7 @@ export const products = [
     price: 49,
     unit: "per box",
     category: "Plantain",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346956/unripeplantain_bowe4c.jpg"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346956/unripeplantain_bowe4c.jpg",
   },
   {
@@ -344,6 +384,7 @@ export const products = [
     price: 49,
     unit: "per box",
     category: "Plantain",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346934/ripedplantain_di3s37.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346934/ripedplantain_di3s37.png",
   },
 
@@ -354,6 +395,7 @@ export const products = [
     price: 45,
     unit: "container",
     category: "Oil",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346957/vegetableoil_avpink.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346957/vegetableoil_avpink.png",
   },
   {
@@ -362,6 +404,7 @@ export const products = [
     price: 34,
     unit: "container",
     category: "Oil",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346928/redoil_ytablr.jpg"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346928/redoil_ytablr.jpg",
   },
   {
@@ -370,6 +413,7 @@ export const products = [
     price: 35,
     unit: "container",
     category: "Oil",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346936/sunfloweroil_xiynhd.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346936/sunfloweroil_xiynhd.png",
   },
   {
@@ -378,6 +422,425 @@ export const products = [
     price: 4,
     unit: "container",
     category: "Oil",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1769346909/groundnutoil_xgt3ks.png"],
     image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346909/groundnutoil_xgt3ks.png",
+  },
+
+  // =========================================================
+  // =============== NEW 44 PRODUCTS (PRICE LATER) ============
+  // =========================================================
+
+  // --- PEPPER / SPICES / SEASONING ---
+  {
+    id: "whole-hot-dry-chilli-pepper",
+    name: "Whole Hot Dry Chilli Pepper",
+    price: 0,
+    unit: "per pack",
+    category: "Pepper",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668655/whole_hot_dry_chilli_pepper_yddnex.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668655/whole_hot_dry_chilli_pepper_yddnex.webp",
+  },
+  {
+    id: "schwartz-thyme-165g",
+    name: "Schwartz Thyme 165g",
+    price: 0,
+    unit: "per pack",
+    category: "Grains",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668630/Schwartz_Thyme_165g_mutnar.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668630/Schwartz_Thyme_165g_mutnar.webp",
+  },
+  {
+    id: "prekese-seed-185g",
+    name: "Prekese Seed 185g",
+    price: 0,
+    unit: "per pack",
+    category: "Grains",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668621/Prekese_Seed_185g_tu66du.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668621/Prekese_Seed_185g_tu66du.webp",
+  },
+  {
+    id: "pepper-soup-spice",
+    name: "Pepper Soup Spice",
+    price: 0,
+    unit: "per pack",
+    category: "Grains",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668621/pepper_soup_spice_nqjhly.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668621/pepper_soup_spice_nqjhly.webp",
+  },
+  {
+    id: "costack-ginger-spice-350g",
+    name: "Costack Ginger Spice 350g",
+    price: 0,
+    unit: "per pack",
+    category: "Grains",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668587/Costack_Ginger_Spice_350g_gcquwp.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668587/Costack_Ginger_Spice_350g_gcquwp.webp",
+  },
+  {
+    id: "achi-powder-100g",
+    name: "Achi Powder 100g",
+    price: 0,
+    unit: "per pack",
+    category: "Grains",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668587/achi_powder_-100g_cu41cm.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668587/achi_powder_-100g_cu41cm.webp",
+  },
+
+  // --- GRAINS / SEEDS ---
+  {
+    id: "whole-egusi-1kg",
+    name: "Whole Egusi 1kg",
+    price: 0,
+    unit: "per pack",
+    category: "Grains",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668654/Whole_Egusi_1kg_m8hdu7.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668654/Whole_Egusi_1kg_m8hdu7.webp",
+  },
+  {
+    id: "grounded-egusi",
+    name: "Grounded Egusi",
+    price: 0,
+    unit: "per pack",
+    category: "Grains",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668611/grounded_egusi_ai92dq.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668611/grounded_egusi_ai92dq.webp",
+  },
+
+  // --- IRU / OGIRI / UGBA / ABACHA (STAPLES) ---
+  {
+    id: "wet-iru-200g",
+    name: "Wet Iru 200g",
+    price: 0,
+    unit: "per pack",
+    category: "Grains",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668653/wet_iru_-200g_ebcbad.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668653/wet_iru_-200g_ebcbad.webp",
+  },
+  {
+    id: "dried-iru-dawadawa-locust-beans",
+    name: "Dried Iru (Dawadawa) Locust Beans",
+    price: 0,
+    unit: "per pack",
+    category: "Grains",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668587/dried_iru_dawadawa_-_locust_beans_jyzmvo.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668587/dried_iru_dawadawa_-_locust_beans_jyzmvo.webp",
+  },
+  {
+    id: "ogiri-80g",
+    name: "Ogiri 80g",
+    price: 0,
+    unit: "per pack",
+    category: "Grains",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668620/ogiri-80g_e8iyb0.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668620/ogiri-80g_e8iyb0.webp",
+  },
+  {
+    id: "uncut-ugba",
+    name: "Uncut Ugba",
+    price: 0,
+    unit: "per pack",
+    category: "Grains",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668640/uncut_ugba_idqpyt.jpg"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668640/uncut_ugba_idqpyt.jpg",
+  },
+  {
+    id: "cut-ugba",
+    name: "Cut Ugba",
+    price: 0,
+    unit: "per pack",
+    category: "Grains",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668587/cut_ugba_rpldgu.jpg"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668587/cut_ugba_rpldgu.jpg",
+  },
+  {
+    id: "abacha",
+    name: "Abacha",
+    price: 0,
+    unit: "per pack",
+    category: "Grains",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668587/abacha_peikl6.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668587/abacha_peikl6.webp",
+  },
+
+  // --- PLANTAIN / TUBERS ---
+  {
+    id: "unriped-green-plantain-box",
+    name: "Unriped Green Plantain (Box)",
+    price: 0,
+    unit: "per box",
+    category: "Plantain",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668642/unriped_green_plantain_box_vsy4v6.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668642/unriped_green_plantain_box_vsy4v6.webp",
+  },
+  {
+    id: "riped-plantain-box",
+    name: "Riped Plantain (Box)",
+    price: 0,
+    unit: "per box",
+    category: "Plantain",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668621/riped_plantain_box_mvapta.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668621/riped_plantain_box_mvapta.webp",
+  },
+  {
+    id: "sweet-potato",
+    name: "Sweet Potato",
+    price: 0,
+    unit: "per pack",
+    category: "Yam",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668640/sweet_potato_qgpvt7.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668640/sweet_potato_qgpvt7.webp",
+  },
+
+  // --- LEAVES / VEGETABLES ---
+  {
+    id: "spinach",
+    name: "Spinach",
+    price: 0,
+    unit: "per bunch",
+    category: "Vegetables",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668640/spinach_effrd1.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668640/spinach_effrd1.webp",
+  },
+  {
+    id: "fresh-ugu",
+    name: "Fresh Ugu",
+    price: 0,
+    unit: "per bunch",
+    category: "Vegetables",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668610/fresh_ugu_g25jkj.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668610/fresh_ugu_g25jkj.webp",
+  },
+  {
+    id: "fresh-uziza-leave",
+    name: "Fresh Uziza Leave",
+    price: 0,
+    unit: "per bunch",
+    category: "Vegetables",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668611/fresh_uziza_leave_gcmazj.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668611/fresh_uziza_leave_gcmazj.webp",
+  },
+  {
+    id: "fresh-okro-okra-100g",
+    name: "Fresh Okro/Okra 100g",
+    price: 0,
+    unit: "per pack",
+    category: "Vegetables",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668602/fresh_okro_okra_100g_trokbj.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668602/fresh_okro_okra_100g_trokbj.webp",
+  },
+  {
+    id: "fresh-okro-box",
+    name: "Fresh Okro (Box)",
+    price: 0,
+    unit: "per box",
+    category: "Vegetables",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668602/fresh_okro_box_i1ximd.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668602/fresh_okro_box_i1ximd.webp",
+  },
+  {
+    id: "fresh-ginger-100g",
+    name: "Fresh Ginger 100g",
+    price: 0,
+    unit: "per pack",
+    category: "Vegetables",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668601/fresh_ginger_-_100g_ska4n2.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668601/fresh_ginger_-_100g_ska4n2.webp",
+  },
+  {
+    id: "fresh-okazi",
+    name: "Fresh Okazi",
+    price: 0,
+    unit: "per bunch",
+    category: "Vegetables",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668602/fresh_okazi_ggq6b5.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668602/fresh_okazi_ggq6b5.webp",
+  },
+  {
+    id: "fresh-oha",
+    name: "Fresh Oha",
+    price: 0,
+    unit: "per bunch",
+    category: "Vegetables",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668601/fresh_oha_zebghr.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668601/fresh_oha_zebghr.webp",
+  },
+  {
+    id: "fresh-garlic-pack-of-4",
+    name: "Fresh Garlic (Pack of 4)",
+    price: 0,
+    unit: "pack",
+    category: "Vegetables",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668588/Fresh_Garlic_Pack_of_4_jbcvgz.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668588/Fresh_Garlic_Pack_of_4_jbcvgz.webp",
+  },
+  {
+    id: "fresh-efo-tete-callaloo-bunch",
+    name: "Fresh Efo Tete (Callaloo) Bunch",
+    price: 0,
+    unit: "per bunch",
+    category: "Vegetables",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668588/Fresh_Efo_Tete_Callaloo_Bunch_faaqjg.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668588/Fresh_Efo_Tete_Callaloo_Bunch_faaqjg.webp",
+  },
+  {
+    id: "fresh-ewedu",
+    name: "Fresh Ewedu",
+    price: 0,
+    unit: "per bunch",
+    category: "Vegetables",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668588/fresh_ewedu_vnn7x6.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668588/fresh_ewedu_vnn7x6.webp",
+  },
+  {
+    id: "fresh-soko-bunch",
+    name: "Fresh Soko (Bunch)",
+    price: 0,
+    unit: "per bunch",
+    category: "Vegetables",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668603/fresh_soko-bunch_oaynbm.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668603/fresh_soko-bunch_oaynbm.webp",
+  },
+  {
+    id: "dried-ugu-leaves",
+    name: "Dried Ugu Leaves",
+    price: 0,
+    unit: "per pack",
+    category: "Vegetables",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668588/dried_ugu_leaves_kgdsqe.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668588/dried_ugu_leaves_kgdsqe.webp",
+  },
+  {
+    id: "dried-uziza-30g",
+    name: "Dried Uziza 30g",
+    price: 0,
+    unit: "per pack",
+    category: "Vegetables",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668587/dried_uziza_30g_kwjhkj.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668587/dried_uziza_30g_kwjhkj.webp",
+  },
+  {
+    id: "dried-okazi-leave-big-bag",
+    name: "Dried Okazi Leaves (Big Bag)",
+    price: 0,
+    unit: "per bag",
+    category: "Vegetables",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668587/dried_okazi_leave_big_bag_500kg_qlvujy.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668587/dried_okazi_leave_big_bag_500kg_qlvujy.webp",
+  },
+  {
+    id: "dried-bitter-leaves-30g",
+    name: "Dried Bitter Leaves 30g",
+    price: 0,
+    unit: "per pack",
+    category: "Vegetables",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668587/Dried_Bitter_Leaves_30g_tvpfpk.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668587/Dried_Bitter_Leaves_30g_tvpfpk.webp",
+  },
+
+  // --- FISH / PROTEIN ITEMS ---
+  {
+    id: "shawa-bonga-fish",
+    name: "Shawa Bonga Fish",
+    price: 0,
+    unit: "per pack",
+    category: "Fish",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668631/shawa_bonga_fish_hjkukn.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668631/shawa_bonga_fish_hjkukn.webp",
+  },
+  {
+    id: "mackerel-whole-pack-3-4",
+    name: "Mackerel Whole (Pack of 3-4)",
+    price: 0,
+    unit: "per pack",
+    category: "Fish",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668612/mackerel_whole_-_pack_of_3-4_n5idap.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668612/mackerel_whole_-_pack_of_3-4_n5idap.webp",
+  },
+  {
+    id: "mackerel-whole-5kg",
+    name: "Mackerel Whole 5kg",
+    price: 0,
+    unit: "5kg",
+    category: "Fish",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668612/MACKEREL_WHOLE_5KG_vukems.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668612/MACKEREL_WHOLE_5KG_vukems.webp",
+  },
+  {
+    id: "ground-prawns-1kg",
+    name: "Ground Prawns 1kg",
+    price: 0,
+    unit: "1kg",
+    category: "Protein",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668611/Ground_Prawns_1kg_pjnwrl.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668611/Ground_Prawns_1kg_pjnwrl.webp",
+  },
+
+  // --- FROZEN PROTEIN / SMOKED TURKEY ---
+  {
+    id: "smoked-turkey-wings-10kg",
+    name: "Smoked Turkey Wings 10kg",
+    price: 0,
+    unit: "10kg",
+    category: "Frozen Protein",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668640/smoked_turkey_wings_10kg_bnr5ml.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668640/smoked_turkey_wings_10kg_bnr5ml.webp",
+  },
+  {
+    id: "smoked-cut-turkey-box-5kg",
+    name: "Smoked Cut Turkey Box 5kg",
+    price: 0,
+    unit: "5kg",
+    category: "Frozen Protein",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668639/smoked_cut_turkey_box_-_5kg_qex1jo.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668639/smoked_cut_turkey_box_-_5kg_qex1jo.webp",
+  },
+  {
+    id: "fresh-smoked-cut-turkey-2kg",
+    name: "Fresh Smoked Cut Turkey 2kg",
+    price: 0,
+    unit: "2kg",
+    category: "Frozen Protein",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668603/fresh_smoked_cut_turkey_-_2kg_rczdqg.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668603/fresh_smoked_cut_turkey_-_2kg_rczdqg.webp",
+  },
+
+  // --- WRAPS / FLOUR / FUFE ---
+  {
+    id: "moimoi-leave-box",
+    name: "Moi Moi Leaves (Box)",
+    price: 0,
+    unit: "per box",
+    category: "Grains",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668620/moimoi_leave_box9jr.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668620/moimoi_leave_box9jr.webp",
+  },
+  {
+    id: "fufu-akpu",
+    name: "Fufu (Akpu)",
+    price: 0,
+    unit: "per pack",
+    category: "Grains",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668611/fufu_akpu_cqj3xl.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668611/fufu_akpu_cqj3xl.webp",
+  },
+  {
+    id: "cassava-flour-fufu-akpu-500g",
+    name: "Cassava Flour Fufu (Akpu) 500g",
+    price: 0,
+    unit: "500g",
+    category: "Grains",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668586/cassava_flour_fufu_-_akpu_500g_pa83ek.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668586/cassava_flour_fufu_-_akpu_500g_pa83ek.webp",
+  },
+
+  // --- UZIZA SEED (spice) ---
+  {
+    id: "uziza-seed",
+    name: "Uziza Seed",
+    price: 0,
+    unit: "per pack",
+    category: "Grains",
+    images: ["https://res.cloudinary.com/dut0fvswc/image/upload/v1770668642/uziza_seed_tbt6g3.webp"],
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668642/uziza_seed_tbt6g3.webp",
   },
 ];

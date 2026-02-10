@@ -14,32 +14,45 @@ export default function ProductCard({ product }) {
     setIsCartOpen(true); // 🔥 AUTO OPEN
   };
 
+  // ✅ Supports new multi-image format + old single image format
+  const mainImage =
+    (Array.isArray(product?.images) && product.images[0]) ||
+    product?.image ||
+    "/images/placeholder.png"; // add this image in /public/images if you want
+
   return (
     <div className="bg-white rounded-xl shadow-sm p-3">
-      <div className="relative aspect-square rounded-lg overflow-hidden">
+      <div className="relative aspect-square rounded-lg overflow-hidden bg-gray-50">
         <Image
-          src={product.image}
-          alt={product.name}
+          src={mainImage}
+          alt={product?.name || "Product image"}
           fill
           className="object-cover"
+          sizes="(max-width: 768px) 50vw, 25vw"
         />
       </div>
 
-      <h3 className="mt-2 text-sm font-semibold">{product.name}</h3>
+      <h3 className="mt-2 text-sm font-semibold line-clamp-2">
+        {product.name}
+      </h3>
 
       <div className="flex justify-between items-center mt-2">
-        <span className="font-bold text-green-700">£{product.price}</span>
+        <span className="font-bold text-green-700">
+          £{Number(product.price || 0).toFixed(2)}
+        </span>
 
         <div className="flex items-center gap-2">
           <button
             onClick={() => removeFromCart(product.id)}
             disabled={qty === 0}
-            className="w-7 h-7 rounded-full bg-gray-200"
+            className={`w-7 h-7 rounded-full bg-gray-200 ${
+              qty === 0 ? "opacity-50 cursor-not-allowed" : ""
+            }`}
           >
             −
           </button>
 
-          <span>{qty}</span>
+          <span className="min-w-[18px] text-center">{qty}</span>
 
           <button
             onClick={handleAdd}
