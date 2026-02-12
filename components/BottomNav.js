@@ -28,9 +28,17 @@ export default function BottomNav() {
   };
 
   return (
-    <div className="fixed bottom-0 w-full bg-white border-t md:hidden z-50">
+    <div
+      className="
+        fixed bottom-0 left-0 right-0
+        w-full
+        bg-white/95 supports-[backdrop-filter]:bg-white/80 supports-[backdrop-filter]:backdrop-blur
+        border-t
+        md:hidden
+        z-[9999]
+      "
+    >
       <div className="flex justify-around items-center h-16">
-
         {/* Home */}
         {navLink("/", "🏠")}
 
@@ -69,7 +77,6 @@ export default function BottomNav() {
 
         {/* Account */}
         {navLink("/login", "👤")}
-
       </div>
     </div>
   );
