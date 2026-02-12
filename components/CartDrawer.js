@@ -38,20 +38,23 @@ Total: £${cartTotal.toFixed(2)}
   const relatedItems = useMemo(() => {
     if (!cartItems.length) return [];
 
-    const cartIds = new Set(cartItems.map((c) => c.id));
-    const cartCategories = new Set(cartItems.map((c) => c.category));
+    const currentProductIds = new Set(products.map((p) => p.id));
+    const cleanedCartItems = cartItems.filter((c) =>
+      currentProductIds.has(c.id)
+    );
 
-    // Prefer same-category items, exclude items already in cart
+    if (!cleanedCartItems.length) return [];
+
+    const cartIds = new Set(cleanedCartItems.map((c) => c.id));
+    const cartCategories = new Set(cleanedCartItems.map((c) => c.category));
+
     const sameCategory = products.filter(
       (p) => cartCategories.has(p.category) && !cartIds.has(p.id)
     );
 
-    // Fallback: just pick any products not in cart
     const fallback = products.filter((p) => !cartIds.has(p.id));
-
     const list = sameCategory.length ? sameCategory : fallback;
 
-    // Shuffle lightly and pick a few
     const shuffled = [...list].sort(() => Math.random() - 0.5);
     return shuffled.slice(0, 6);
   }, [cartItems]);
@@ -68,18 +71,21 @@ Total: £${cartTotal.toFixed(2)}
 
       {/* Drawer */}
       <div
-        className={`fixed top-0 right-0 h-full w-80 bg-white z-50 transform transition-transform duration-300
+        className={`fixed top-0 right-0 h-full w-[92vw] max-w-[360px] bg-white z-[9999] transform transition-transform duration-300
         ${isCartOpen ? "translate-x-0" : "translate-x-full"}`}
       >
+        {/* ✅ Close Button: make it ABOVE navbar always */}
+        <button
+          onClick={() => setIsCartOpen(false)}
+          aria-label="Close cart"
+          className="fixed right-3 top-3 z-[10000] w-10 h-10 rounded-full bg-white border shadow flex items-center justify-center text-xl"
+        >
+          ✕
+        </button>
+
         {/* Header */}
-        <div className="flex justify-between items-center p-4 border-b">
+        <div className="flex justify-between items-center p-4 border-b pr-14">
           <h2 className="font-bold text-lg">Your Cart</h2>
-          <button
-            onClick={() => setIsCartOpen(false)}
-            className="text-xl"
-          >
-            ✕
-          </button>
         </div>
 
         {/* Body */}
@@ -93,34 +99,31 @@ Total: £${cartTotal.toFixed(2)}
             )}
 
             {cartItems.map((item) => (
-              <div
-                key={item.id}
-                className="flex justify-between items-center"
-              >
-                <div className="min-w-0">
-                  <p className="font-medium text-sm truncate">
-                    {item.name}
-                  </p>
+              <div key={item.id} className="flex justify-between items-center">
+                <div className="min-w-0 pr-3">
+                  <p className="font-medium text-sm truncate">{item.name}</p>
                   <p className="text-xs text-gray-500">
-                    £{item.price.toFixed(2)}
+                    £{Number(item.price).toFixed(2)}
                   </p>
                 </div>
 
-                <div className="flex items-center gap-2">
+                <div className="flex items-center gap-2 flex-shrink-0">
                   <button
                     onClick={() => removeFromCart(item.id)}
-                    className="w-6 h-6 bg-gray-200 rounded"
+                    className="w-7 h-7 bg-gray-200 rounded"
+                    aria-label="Decrease quantity"
                   >
                     −
                   </button>
 
-                  <span className="text-sm font-semibold">
+                  <span className="text-sm font-semibold w-5 text-center">
                     {item.qty}
                   </span>
 
                   <button
                     onClick={() => addToCart(item)}
-                    className="w-6 h-6 bg-orange-500 text-white rounded"
+                    className="w-7 h-7 bg-orange-500 text-white rounded"
+                    aria-label="Increase quantity"
                   >
                     +
                   </button>
@@ -133,40 +136,39 @@ Total: £${cartTotal.toFixed(2)}
           {cartItems.length > 0 && relatedItems.length > 0 && (
             <div className="border-t px-4 py-4">
               <div className="flex items-center justify-between mb-3">
-                <h3 className="font-semibold text-sm">
-                  You may also like
-                </h3>
-                <span className="text-xs text-gray-500">
-                  Tap to add
-                </span>
+                <h3 className="font-semibold text-sm">You may also like</h3>
+                <span className="text-xs text-gray-500">Tap to add</span>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-3 gap-2">
                 {relatedItems.map((p) => (
                   <button
                     key={p.id}
                     onClick={() => addToCart(p)}
-                    className="border rounded-xl p-2 text-left hover:border-orange-300 transition"
+                    className="border rounded-lg p-2 text-left hover:border-orange-300 transition"
                   >
-                    <div className="relative w-full h-20 rounded-lg overflow-hidden bg-gray-50">
-                      <Image
-                        src={p.image}
-                        alt={p.name}
-                        fill
-                        className="object-cover"
-                      />
+                    <div className="relative w-full h-14 rounded-md overflow-hidden bg-gray-50">
+                      {p.image ? (
+                        <Image
+                          src={p.image}
+                          alt={p.name}
+                          fill
+                          className="object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-[10px] text-gray-400">
+                          No image
+                        </div>
+                      )}
                     </div>
 
-                    <p className="mt-2 text-xs font-semibold line-clamp-2">
+                    <p className="mt-1 text-[11px] font-semibold leading-snug line-clamp-2">
                       {p.name}
                     </p>
 
                     <div className="flex items-center justify-between mt-1">
-                      <span className="text-xs font-bold text-green-700">
+                      <span className="text-[11px] font-bold text-green-700">
                         £{Number(p.price).toFixed(2)}
-                      </span>
-                      <span className="text-[10px] text-gray-500">
-                        {p.category}
                       </span>
                     </div>
                   </button>
@@ -177,13 +179,12 @@ Total: £${cartTotal.toFixed(2)}
         </div>
 
         {/* Footer */}
-        <div className="border-t p-4 space-y-3">
+        <div className="border-t p-4 space-y-3 pb-24">
           <div className="flex justify-between font-bold">
             <span>Total</span>
             <span>£{cartTotal.toFixed(2)}</span>
           </div>
 
-          {/* STRIPE CHECKOUT */}
           {cartItems.length > 0 && (
             <Link
               href="/checkout"
@@ -194,7 +195,6 @@ Total: £${cartTotal.toFixed(2)}
             </Link>
           )}
 
-          {/* WHATSAPP FALLBACK */}
           {cartItems.length > 0 && (
             <a
               href={whatsappLink}

@@ -1,129 +1,138 @@
+// components/HeroCategoriesInner.js
 "use client";
 
 import Image from "next/image";
 import { products } from "@/data/products";
 
-/**
- * Helper: find product image by keyword in id or name
- */
-function findImageByKeyword(keyword) {
-  const k = keyword.toLowerCase();
-  const p = products.find(
-    (x) =>
-      (x.id || "").toLowerCase().includes(k) ||
-      (x.name || "").toLowerCase().includes(k)
-  );
-  return p?.image;
+/** ---------------- helpers ---------------- */
+const norm = (v) => String(v || "").trim();
+const keyOf = (v) => norm(v).toLowerCase();
+
+function uniqueBy(arr, getKey) {
+  const seen = new Set();
+  const out = [];
+  for (const item of arr) {
+    const k = getKey(item);
+    if (!k || seen.has(k)) continue;
+    seen.add(k);
+    out.push(item);
+  }
+  return out;
 }
 
-/**
- * Category → Image mapping
- * (We can pull some images from products so you don’t manually manage everything)
+/** ---------------- category grouping ----------------
+ * We are NOT changing product.category values.
+ * We only map them into the order/group the client wants.
  */
-const categoryImages = {
-  Vegetables:
-    findImageByKeyword("ugu") ||
-    "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668610/fresh_ugu_g25jkj.webp",
-
-  Pepper:
-    "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346950/ugandapepper_jlfqqt.jpg",
-
-  Fish:
-    "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346965/wholetilapia_qkt6vg.png",
-
-  "Frozen Protein":
-    "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346901/frozenfish_b02yqa.png",
-
-  Protein:
-    "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346898/beef_w5m7xr.png",
-
-  Chicken:
-    "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346928/pluverahardchicken_tsxa5k.png",
-
-  Garri:
-    "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346917/ijebugarri_qp2i6a.png",
-
-  Grains:
-    "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346899/beans_cbdkke.png",
-
-  Yam:
-    "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346901/freshuncutyam_sf0rba.png",
-
-  Plantain:
-    "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346956/unripeplantain_bowe4c.jpg",
-
-  Oil:
-    "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346957/vegetableoil_avpink.png",
-
-  // ✅ New: Spices
-  // (use one of the new spice images you added)
-  Spices:
-    findImageByKeyword("pepper_soup_spice") ||
-    findImageByKeyword("thyme") ||
-    "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668621/pepper_soup_spice_nqjhly.webp",
-};
-
-/**
- * Detect spices from the products you added
- * (adjust keywords anytime)
- */
-const SPICE_KEYWORDS = [
-  "spice",
-  "thyme",
-  "prekese",
-  "achi",
-  "uziza",
-  "ogiri",
-  "egusi",
-  "prawns",
-  "dawadawa",
-  "iru",
-  "ginger",
-  "garlic",
+const CATEGORY_GROUPS_ORDER = [
+  { label: "Spices", keys: ["spices", "spice", "seasoning", "condiments"] },
+  { label: "Pepper", keys: ["pepper", "peppers"] },
+  { label: "Fish", keys: ["fish", "seafood"] },
+  { label: "Vegetables", keys: ["vegetables", "vegetable", "leafy", "leaves"] },
+  { label: "Tubers", keys: ["tubers", "yam", "plantain"] },
+  { label: "Meat", keys: ["meat", "protein", "frozen protein", "chicken"] },
 ];
 
-/**
- * Build dynamic categories from products
- */
-const dynamicCategories = Array.from(new Set(products.map((p) => p.category)));
+// Find existing product categories and place them into desired group order
+function buildOrderedCategoriesFromProducts(list) {
+  const cats = uniqueBy(
+    list
+      .map((p) => norm(p.category))
+      .filter(Boolean),
+    (c) => keyOf(c)
+  );
 
-/**
- * ✅ Add virtual categories (like Spices) if matching products exist
- */
-const hasSpices = products.some((p) => {
-  const text = `${p.id || ""} ${p.name || ""}`.toLowerCase();
-  return SPICE_KEYWORDS.some((k) => text.includes(k));
-});
+  const remaining = new Set(cats.map((c) => keyOf(c)));
+  const ordered = [];
 
-/**
- * Final categories used by the UI
- * IMPORTANT: value is what your filter will receive.
- */
+  for (const group of CATEGORY_GROUPS_ORDER) {
+    // pick categories that match this group keys
+    const matches = cats.filter((c) =>
+      group.keys.some((k) => keyOf(c).includes(k))
+    );
+
+    for (const m of matches) {
+      const mk = keyOf(m);
+      if (remaining.has(mk)) {
+        ordered.push(m);
+        remaining.delete(mk);
+      }
+    }
+  }
+
+  // Add any leftover categories at the end (kept unique)
+  for (const c of cats) {
+    const ck = keyOf(c);
+    if (remaining.has(ck)) {
+      ordered.push(c);
+      remaining.delete(ck);
+    }
+  }
+
+  return ordered;
+}
+
+/** ---------------- images ---------------- */
+// Pick the first product image for a given category name
+function getCategoryImage(categoryDisplay) {
+  const catKey = keyOf(categoryDisplay);
+  const p = products.find((x) => keyOf(x.category) === catKey && x.image);
+  return p?.image || null;
+}
+
+// Vegetables image rule: DO NOT use tomato.
+// Prefer Ugu, then any veg image that is not tomato.
+function getVegetablesImage(categoryDisplay) {
+  const catKey = keyOf(categoryDisplay);
+
+  // Prefer Ugu
+  const ugu = products.find(
+    (p) =>
+      keyOf(p.category) === catKey &&
+      (keyOf(p.name).includes("ugu") || keyOf(p.id).includes("ugu")) &&
+      p.image
+  );
+  if (ugu?.image) return ugu.image;
+
+  // Otherwise any veg product not tomato
+  const otherVeg = products.find(
+    (p) =>
+      keyOf(p.category) === catKey &&
+      !keyOf(p.name).includes("tomato") &&
+      !keyOf(p.id).includes("tomato") &&
+      p.image
+  );
+  if (otherVeg?.image) return otherVeg.image;
+
+  // Fallback (still avoid tomato if possible)
+  const anyVeg = products.find((p) => keyOf(p.category) === catKey && p.image);
+  return anyVeg?.image || null;
+}
+
+// "All" collage images: 3 unique images
+function getAllCollageImages() {
+  const seen = new Set();
+  const imgs = [];
+  for (const p of products) {
+    if (!p?.image) continue;
+    if (seen.has(p.image)) continue;
+    seen.add(p.image);
+    imgs.push(p.image);
+    if (imgs.length === 3) break;
+  }
+  return imgs;
+}
+
+/** ---------------- build categories ---------------- */
+const orderedCategoryNames = buildOrderedCategoriesFromProducts(products);
+
 const categories = [
   { name: "All", value: "all" },
-
-  // virtual category
-  ...(hasSpices ? [{ name: "Spices", value: "Spices" }] : []),
-
-  // real categories coming from your product.category values
-  ...dynamicCategories.map((cat) => ({
-    name: cat,
-    value: cat,
-  })),
+  ...orderedCategoryNames.map((cat) => ({ name: cat, value: cat })),
 ];
 
 export default function CategoriesInner({ active, onSelect }) {
-  /**
-   * When user clicks "Spices", we’ll send "Spices" to the parent.
-   * ✅ NOTE: ProductGrid must know how to filter "Spices" (we’ll update that next).
-   */
-
-  // 2–3 product images collage for "All"
-  const allImages = [
-    categoryImages.Vegetables,
-    categoryImages.Pepper,
-    categoryImages.Fish,
-  ].filter(Boolean);
+  const allImages = getAllCollageImages();
 
   return (
     <section className="sticky top-14 bg-white z-40 border-b">
@@ -133,14 +142,19 @@ export default function CategoriesInner({ active, onSelect }) {
             active === cat.value ||
             (active === "all" && cat.value === "all");
 
-          const img =
-            cat.value === "all"
-              ? null
-              : categoryImages[cat.value] || categoryImages.Vegetables;
+          let img = null;
+          if (cat.value !== "all") {
+            // Special rule: vegetables image must not be tomato
+            if (keyOf(cat.value).includes("vegetables")) {
+              img = getVegetablesImage(cat.value);
+            } else {
+              img = getCategoryImage(cat.value);
+            }
+          }
 
           return (
             <button
-              key={cat.value}
+              key={keyOf(cat.value)} // ✅ unique keys (fixes duplicate key warnings)
               onClick={() => onSelect(cat.value)}
               className={`
                 min-w-[45%] sm:min-w-[30%]
@@ -152,13 +166,11 @@ export default function CategoriesInner({ active, onSelect }) {
                 }
               `}
             >
-              {/* IMAGE AREA */}
               <div className="relative h-24 bg-gray-100">
                 {cat.value === "all" ? (
-                  // ✅ "All" collage (works better than logo on mobile)
                   <div className="grid grid-cols-3 h-24">
-                    {allImages.slice(0, 3).map((src, idx) => (
-                      <div key={idx} className="relative h-24">
+                    {allImages.map((src, idx) => (
+                      <div key={src || idx} className="relative h-24">
                         <Image
                           src={src}
                           alt="All products"
@@ -170,7 +182,7 @@ export default function CategoriesInner({ active, onSelect }) {
                       </div>
                     ))}
                   </div>
-                ) : (
+                ) : img ? (
                   <Image
                     src={img}
                     alt={cat.name}
@@ -179,11 +191,15 @@ export default function CategoriesInner({ active, onSelect }) {
                     sizes="(max-width: 640px) 50vw, 30vw"
                     priority={isActive}
                   />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-xs text-gray-500">
+                    No image
+                  </div>
                 )}
               </div>
 
               <p className="text-center text-sm font-medium py-2">
-                {cat.name === "Frozen Protein" ? "Frozen Foods" : cat.name}
+                {cat.name}
               </p>
             </button>
           );

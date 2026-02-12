@@ -1,3 +1,4 @@
+// app/page.js
 "use client";
 
 import { useState, Suspense } from "react";
@@ -7,6 +8,19 @@ import HeroCategories from "@/components/HeroCategories";
 import CategorySlider from "@/components/CategorySlider";
 import FilterBar from "@/components/FilterBar";
 import ProductGrid from "@/components/ProductGrid";
+
+// ✅ NEW homepage sections
+import HomeHero from "@/components/home/HomeHero";
+import FeaturedShowcase from "@/components/home/FeaturedShowcase";
+import FeatureStrip from "@/components/home/FeatureStrip";
+import PromoBanners from "@/components/home/PromoBanners";
+import CTASection from "@/components/home/CTASection";
+
+// ✅ NEW sections we just created
+import HotDealsSection from "@/components/home/HotDealsSection";
+import PopularThisWeekSection from "@/components/home/PopularThisWeekSection";
+import RecommendedForYouSection from "@/components/home/RecommendedForYouSection";
+
 
 export default function Home() {
   // ✅ MUST be lowercase to match ProductGrid logic
@@ -18,6 +32,34 @@ export default function Home() {
     <>
       <InfoHeader />
       <Navbar />
+
+      {/* ✅ HERO TOP (premium look) */}
+      <HomeHero onShopNow={() => setCategory("all")} />
+
+      {/* ✅ 4 medium-big featured products with "Add to Cart" */}
+      <FeaturedShowcase />
+
+      {/* ✅ fast delivery / trust strip */}
+      <FeatureStrip />
+
+      {/* 🔥 HOT DEALS (NEW) */}
+      <HotDealsSection />
+
+      {/* 🧠 RECOMMENDED (NEW) */}
+      <RecommendedForYouSection activeCategory={category} />
+
+
+      {/* ⭐ POPULAR THIS WEEK (NEW) */}
+      <PopularThisWeekSection
+        popularIds={[
+          "whole-egusi-1kg",
+          "fresh-okro-box",
+          "fresh-ugu",
+          "hake-fish",
+          "uncut-ugba",
+          "ijebu-garri",
+        ]}
+      />
 
       {/* ✅ REQUIRED Suspense boundary for useSearchParams */}
       <Suspense fallback={null}>
@@ -35,12 +77,17 @@ export default function Home() {
           setSort={setSort}
         />
 
+        {/* ✅ promo cards to populate the page */}
+        <PromoBanners />
+
         {/* 🛒 PRODUCT GRID */}
-        <ProductGrid
-          category={category}
-          search={search}
-          sort={sort}
-        />
+        <div id="products">
+          <ProductGrid
+            category={category}
+            search={search}
+            sort={sort}
+          />
+        </div>
 
         {/* 🎠 AUTO-SLIDER CATEGORY SECTION (BODY) */}
         <CategorySlider
@@ -48,6 +95,9 @@ export default function Home() {
           onSelect={setCategory}
         />
       </Suspense>
+
+      {/* ✅ final CTA */}
+      <CTASection />
     </>
   );
 }
