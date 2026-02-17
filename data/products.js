@@ -255,10 +255,10 @@ export const products = [
     unit: "per bunch",
     category: "Vegetables",
     images: [
-      "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668602/fresh_okazi_ggq6b5.webp",
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771367874/freshcutokazi_vv01ax.jpg",
     ],
     image:
-      "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668602/fresh_okazi_ggq6b5.webp",
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771367874/freshcutokazi_vv01ax.jpg",
   },
   {
     id: "waterleaf",
@@ -267,10 +267,10 @@ export const products = [
     unit: "per bunch",
     category: "Vegetables",
     images: [
-      "https://res.cloudinary.com/dut0fvswc/image/upload/v1770905592/waterleaf_qc2dj7.png",
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771370544/freshwaterleaf_l1fqtc.png",
     ],
     image:
-      "https://res.cloudinary.com/dut0fvswc/image/upload/v1770905592/waterleaf_qc2dj7.png",
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771370544/freshwaterleaf_l1fqtc.png",
   },
   {
     id: "bitterleaf",
@@ -279,10 +279,10 @@ export const products = [
     unit: "per bunch",
     category: "Vegetables",
     images: [
-      "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668587/Dried_Bitter_Leaves_30g_tvpfpk.webp",
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771367875/freshbitterleaf_phyg5i.webp",
     ],
     image:
-      "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668587/Dried_Bitter_Leaves_30g_tvpfpk.webp",
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771367875/freshbitterleaf_phyg5i.webp",
   },
   {
     id: "utazi",
@@ -508,10 +508,10 @@ export const products = [
     unit: "1kg",
     category: "Protein",
     images: [
-      "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346936/sheinbeef_plrlkz.png",
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771367874/sheinbeef_k6kcfe.jpg",
     ],
     image:
-      "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346936/sheinbeef_plrlkz.png",
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771367874/sheinbeef_k6kcfe.jpg",
   },
   {
     id: "special-goat-meat-with-skin-1kg",
@@ -616,10 +616,10 @@ export const products = [
     unit: "2 litres",
     category: "Protein",
     images: [
-      "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346928/redoil_ytablr.jpg",
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771367874/OluoluPalm_Oil_4litre_n22v2q.webp",
     ],
     image:
-      "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346928/redoil_ytablr.jpg",
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771367874/OluoluPalm_Oil_4litre_n22v2q.webp",
   },
   {
     id: "akwaibom palm oil",
