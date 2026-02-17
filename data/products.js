@@ -3,8 +3,8 @@
 export const products = [
   // ================= SPICES / CONDIMENTS =================
   {
-    id: "egusi-whole-ghana-grind",
-    name: "Egusi Whole Ghana Grind",
+    id: "egusi-whole",
+    name: "Egusi Whole",
     price: 12.99,
     unit: "per pack",
     category: "Spices",
@@ -57,18 +57,18 @@ export const products = [
     unit: "per pack",
     category: "Spices",
     images: [
-      "https://res.cloudinary.com/dut0fvswc/image/upload/v1770905588/maggi_wshg1t.webp",
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771217880/knor_chicken_maggi_jj0ytn.webp",
     ],
     image:
-      "https://res.cloudinary.com/dut0fvswc/image/upload/v1770905588/maggi_wshg1t.webp",
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771217880/knor_chicken_maggi_jj0ytn.webp",
   },
 
   // ================= STAPLES =================
   {
     id: "garri",
     name: "Garri",
-    price: 34.99,
-    unit: "per bag",
+    price: 35.0,
+    unit: "per 20kg",
     category: "Staples",
     images: [
       "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346917/ijebugarri_qp2i6a.png",
@@ -79,7 +79,7 @@ export const products = [
   {
     id: "yam",
     name: "Yam",
-    price: 39.99,
+    price: 34.0,
     unit: "per box",
     category: "Tubers",
     images: [
@@ -133,10 +133,10 @@ export const products = [
     unit: "per box",
     category: "Pepper",
     images: [
-      "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346950/ugandapepper_jlfqqt.jpg",
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771340166/ugandanpepper_t5orzq.jpg",
     ],
     image:
-      "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346950/ugandapepper_jlfqqt.jpg",
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771340166/ugandanpepper_t5orzq.jpg",
   },
   {
     id: "scotch-bonnet-pepper-1kg",
@@ -145,10 +145,10 @@ export const products = [
     unit: "1kg",
     category: "Pepper",
     images: [
-      "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346941/scotchbonnetpepper_qujlsr.png",
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346950/ugandapepper_jlfqqt.jpg",
     ],
     image:
-      "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346941/scotchbonnetpepper_qujlsr.png",
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346950/ugandapepper_jlfqqt.jpg",
   },
 
   // ================= VEGETABLES =================
@@ -315,19 +315,19 @@ export const products = [
   {
     id: "sweet-potatoes",
     name: "Sweet Potatoes",
-    price: 6.99,
-    unit: "per pack",
+    price: 32.0,
+    unit: "per box",
     category: "Tubers",
     images: [
-      "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668640/sweet_potato_qgpvt7.webp",
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771217915/sweet_ugandan_potatoes_frndll.jpg",
     ],
     image:
-      "https://res.cloudinary.com/dut0fvswc/image/upload/v1770668640/sweet_potato_qgpvt7.webp",
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771217915/sweet_ugandan_potatoes_frndll.jpg",
   },
   {
-    id: "plantain",
-    name: "Plantain",
-    price: 44.99,
+    id: "unripe-plantain",
+    name: "Unripe Plantain",
+    price: 49.0,
     unit: "per box",
     category: "Plantain",
     images: [
@@ -341,7 +341,7 @@ export const products = [
   {
     id: "hake-fish",
     name: "Hake Fish",
-    price: 9.99,
+    price: 5.5,
     unit: "per kg",
     category: "Seafood",
     images: [
@@ -353,20 +353,20 @@ export const products = [
   {
     id: "cat-fish",
     name: "Cat Fish",
-    price: 14.99,
-    unit: "per pack",
+    price: 11.0,
+    unit: "per bag",
     category: "Seafood",
     images: [
-      "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346901/frozencatfish_vmko33.png",
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771278668/2-catfish_d3fpg0.jpg",
     ],
     image:
-      "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346901/frozencatfish_vmko33.png",
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771278668/2-catfish_d3fpg0.jpg",
   },
   {
     id: "tilapia",
     name: "Tilapia",
-    price: 12.99,
-    unit: "per pack",
+    price: 12.0,
+    unit: "per bag",
     category: "Seafood",
     images: [
       "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346965/wholetilapia_qkt6vg.png",
@@ -389,8 +389,8 @@ export const products = [
   {
     id: "small-crocker",
     name: "Small Crocker",
-    price: 10.99,
-    unit: "per pack",
+    price: 5.0,
+    unit: "pack of 3",
     category: "Seafood",
     images: [
       "https://res.cloudinary.com/dut0fvswc/image/upload/v1770905588/small_croaker_fish_xkzofc.webp",
@@ -401,8 +401,8 @@ export const products = [
   {
     id: "big-crocker",
     name: "Big Crocker",
-    price: 13.99,
-    unit: "per pack",
+    price: 16.0,
+    unit: "per bag",
     category: "Seafood",
     images: [
       "https://res.cloudinary.com/dut0fvswc/image/upload/v1770905588/big_croakerfish_mrarq7.jpg",
@@ -413,8 +413,8 @@ export const products = [
   {
     id: "periwinkle",
     name: "Periwinkle",
-    price: 12.99,
-    unit: "per pack",
+    price: 4.0,
+    unit: "per 120g",
     category: "Seafood",
     images: [
       "https://res.cloudinary.com/dut0fvswc/image/upload/v1770905589/periwinkle_ynyvhn.webp",
@@ -425,7 +425,7 @@ export const products = [
   {
     id: "jumbo-snail",
     name: "Jumbo Snail",
-    price: 18.99,
+    price: 15.0,
     unit: "per pack",
     category: "Seafood",
     images: [
@@ -437,21 +437,21 @@ export const products = [
 
   // ================= PROTEINS =================
   {
-    id: "abochi-1kg",
-    name: "Abochi 1kg",
-    price: 9.99,
+    id: "abodi-1kg",
+    name: "Abodi 1kg",
+    price: 4.0,
     unit: "1kg",
     category: "Protein",
     images: [
-      "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346896/abodi_ko1dml.png",
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771217878/abodi_cy5rfo.jpg",
     ],
     image:
-      "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346896/abodi_ko1dml.png",
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771217878/abodi_cy5rfo.jpg",
   },
   {
-    id: "turkey-midways-1kg",
-    name: "Turkey Midways 1kg",
-    price: 12.99,
+    id: "turkey-midwings-1kg",
+    name: "Turkey Midwings 1kg",
+    price: 5.0,
     unit: "1kg",
     category: "Protein",
     images: [
@@ -460,11 +460,13 @@ export const products = [
     image:
       "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346949/turkeymidwing_zeyel2.png",
   },
+
+  // ✅ Keep Pluvera as "per kg" (since you wrote 4.50/kg)
   {
     id: "pluvera-chicken-10kg",
     name: "Pluvera Chicken 10kg",
-    price: 64.99,
-    unit: "10kg",
+    price: 4.5,
+    unit: "per kg (10kg pack)",
     category: "Chicken",
     images: [
       "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346928/pluverahardchicken_tsxa5k.png",
@@ -472,18 +474,21 @@ export const products = [
     image:
       "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346928/pluverahardchicken_tsxa5k.png",
   },
+
+  // ✅ FIXED: price must be ONE number
   {
     id: "jolly-chicken",
     name: "Jolly Chicken",
-    price: 29.99,
+    price: 28.0,
     unit: "per pack",
     category: "Chicken",
     images: [
-      "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346918/jollyhardchicken_mfkedk.png",
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771340164/jolly_chicken_lap_hond84.webp",
     ],
     image:
-      "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346918/jollyhardchicken_mfkedk.png",
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771340164/jolly_chicken_lap_hond84.webp",
   },
+
   {
     id: "jumbo-chicken",
     name: "Jumbo Chicken",
@@ -491,15 +496,15 @@ export const products = [
     unit: "per pack",
     category: "Chicken",
     images: [
-      "https://res.cloudinary.com/dut0fvswc/image/upload/v1770905588/jumbo_chicken_ubxdzo.webp",
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771217879/jumbochickenleg_aaboph.jpg",
     ],
     image:
-      "https://res.cloudinary.com/dut0fvswc/image/upload/v1770905588/jumbo_chicken_ubxdzo.webp",
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771217879/jumbochickenleg_aaboph.jpg",
   },
   {
     id: "sheinbeef-1kg",
     name: "Sheinbeef 1kg",
-    price: 16.99,
+    price: 9.5,
     unit: "1kg",
     category: "Protein",
     images: [
@@ -509,33 +514,33 @@ export const products = [
       "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346936/sheinbeef_plrlkz.png",
   },
   {
-    id: "nigerian-goat-meat-with-skin-1kg",
-    name: "Nigerian Goat Meat with Skin 1kg",
-    price: 18.99,
+    id: "special-goat-meat-with-skin-1kg",
+    name: "Special Goat Meat with Skin 1kg",
+    price: 14.0,
     unit: "1kg",
     category: "Protein",
     images: [
-      "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346918/nigeriangoatmeat_rlkfaj.png",
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771340165/special_goat_meat_qlhvcw.jpg",
     ],
     image:
-      "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346918/nigeriangoatmeat_rlkfaj.png",
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771340165/special_goat_meat_qlhvcw.jpg",
   },
   {
     id: "cow-skin-ponmo",
     name: "Cow Skin Ponmo",
-    price: 7.99,
+    price: 4.0,
     unit: "per kg",
     category: "Protein",
     images: [
-      "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346928/ponmo_aecvth.png",
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771217915/white_ponmo_pp9h8p.webp",
     ],
     image:
-      "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346928/ponmo_aecvth.png",
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771217915/white_ponmo_pp9h8p.webp",
   },
   {
     id: "shaki",
     name: "Shaki",
-    price: 8.99,
+    price: 4.0,
     unit: "per kg",
     category: "Protein",
     images: [
@@ -545,9 +550,9 @@ export const products = [
       "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346935/shaki_omaasb.png",
   },
   {
-    id: "honeycomb",
-    name: "Honeycomb",
-    price: 11.99,
+    id: "honeycomb-shaki",
+    name: "Honeycomb Shaki",
+    price: 6.5,
     unit: "per kg",
     category: "Protein",
     images: [
@@ -559,7 +564,7 @@ export const products = [
   {
     id: "turkey-gizzard",
     name: "Turkey Gizzard",
-    price: 9.99,
+    price: 4.99,
     unit: "per kg",
     category: "Protein",
     images: [
@@ -571,7 +576,7 @@ export const products = [
   {
     id: "smoked-turkey",
     name: "Smoked Turkey",
-    price: 19.99,
+    price: 6.0,
     unit: "per pack",
     category: "Protein",
     images: [
@@ -583,7 +588,7 @@ export const products = [
   {
     id: "chicken-gizzard",
     name: "Chicken Gizzard",
-    price: 8.99,
+    price: 3.99,
     unit: "per kg",
     category: "Protein",
     images: [
@@ -599,9 +604,45 @@ export const products = [
     unit: "per pack",
     category: "Protein",
     images: [
-      "https://res.cloudinary.com/dut0fvswc/image/upload/v1770905590/assorted_qcokjm.jpg",
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346936/sheinbeef_plrlkz.png",
     ],
     image:
-      "https://res.cloudinary.com/dut0fvswc/image/upload/v1770905590/assorted_qcokjm.jpg",
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346936/sheinbeef_plrlkz.png",
+  },
+  {
+    id: "olu olu palm oil",
+    name: "Olu Olu Palm Oil",
+    price: 10.00,
+    unit: "2 litres",
+    category: "Protein",
+    images: [
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346928/redoil_ytablr.jpg",
+    ],
+    image:
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1769346928/redoil_ytablr.jpg",
+  },
+  {
+    id: "akwaibom palm oil",
+    name: "Akwa Ibom Palm Oil",
+    price: 9.00,
+    unit: "1 litre",
+    category: "oil",
+    images: [
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771217880/akwaibom_red_oil-removebg-preview_onl0ev.png",
+    ],
+    image:
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771217880/akwaibom_red_oil-removebg-preview_onl0ev.png",
+  },
+  {
+    id: "blended egusi",
+    name: "Blended Egusi",
+    price: 12.00,
+    unit: "1kg",
+    category: "spices",
+    images: [
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771217879/BLENDED_EGUSI_nqfgls.webp",
+    ],
+    image:
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771217879/BLENDED_EGUSI_nqfgls.webp",
   },
 ];

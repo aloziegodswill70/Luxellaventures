@@ -1,13 +1,12 @@
 // components/home/PopularThisWeekSection.js
 "use client";
 
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Image from "next/image";
 import { products } from "@/data/products";
 import { useCart } from "@/context/CartContext";
 
 export default function PopularThisWeekSection({
-  // ✅ Put the IDs you want to feature (recommended)
   popularIds = [
     "whole-egusi-1kg",
     "fresh-ugu",
@@ -19,23 +18,54 @@ export default function PopularThisWeekSection({
   title = "Popular this week",
   subtitle = "UK customers are buying these a lot 🔥",
   limit = 10,
+
+  autoSlide = true,
+  intervalMs = 3200,
+  stepPx = 240,
 }) {
   const { addToCart, setIsCartOpen } = useCart();
 
+  const sliderRef = useRef(null);
+  const [paused, setPaused] = useState(false);
+
+  /* ================= GET POPULAR PRODUCTS ================= */
   const popularProducts = useMemo(() => {
     const map = new Map(products.map((p) => [p.id, p]));
     const picked = popularIds.map((id) => map.get(id)).filter(Boolean);
 
-    // Fallback if some IDs don't exist
     if (picked.length < Math.min(limit, 6)) {
       const used = new Set(picked.map((p) => p.id));
-      const extra = products.filter((p) => !used.has(p.id)).slice(0, limit - picked.length);
+      const extra = products
+        .filter((p) => !used.has(p.id))
+        .slice(0, limit - picked.length);
       return [...picked, ...extra].slice(0, limit);
     }
 
     return picked.slice(0, limit);
   }, [popularIds, limit]);
 
+  /* ================= AUTO SLIDE ================= */
+  useEffect(() => {
+    if (!autoSlide || paused) return;
+
+    const slider = sliderRef.current;
+    if (!slider) return;
+
+    const tick = () => {
+      const maxScrollLeft = slider.scrollWidth - slider.clientWidth;
+
+      if (slider.scrollLeft >= maxScrollLeft - 8) {
+        slider.scrollTo({ left: 0, behavior: "smooth" });
+      } else {
+        slider.scrollBy({ left: stepPx, behavior: "smooth" });
+      }
+    };
+
+    const id = setInterval(tick, intervalMs);
+    return () => clearInterval(id);
+  }, [autoSlide, paused, intervalMs, stepPx]);
+
+  /* ================= ADD TO CART ================= */
   const handleAdd = (p) => {
     addToCart(p);
     setIsCartOpen(true);
@@ -57,8 +87,15 @@ export default function PopularThisWeekSection({
         </div>
       </div>
 
-      {/* Scroll strip */}
-      <div className="overflow-x-auto scrollbar-hide">
+      {/* Slider */}
+      <div
+        ref={sliderRef}
+        className="overflow-x-auto scrollbar-hide scroll-smooth"
+        onMouseEnter={() => setPaused(true)}   // ✅ pause on hover
+        onMouseLeave={() => setPaused(false)}  // ✅ resume on leave
+        onTouchStart={() => setPaused(true)}   // ✅ pause on touch
+        onTouchEnd={() => setPaused(false)}    // ✅ resume after touch
+      >
         <div className="flex gap-3 min-w-max pb-1">
           {popularProducts.map((p) => (
             <div
@@ -88,8 +125,9 @@ export default function PopularThisWeekSection({
 
                 <div className="flex items-center justify-between mt-2">
                   <div>
+                    {/* Euro currency */}
                     <p className="text-sm font-bold text-green-700">
-                      £{Number(p.price || 0).toFixed(2)}
+                      €{Number(p.price || 0).toFixed(2)}
                     </p>
                     <p className="text-[11px] text-gray-500">{p.unit || ""}</p>
                   </div>
@@ -111,7 +149,7 @@ export default function PopularThisWeekSection({
         </div>
       </div>
 
-      {/* Tiny helper text */}
+      {/* Helper text */}
       <p className="text-[11px] text-gray-500 mt-3">
         Tip: Tap “Add” to quickly build your cart, then checkout with Stripe.
       </p>

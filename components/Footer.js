@@ -1,4 +1,4 @@
-import Image from "next/image";
+
 import Link from "next/link";
 
 export default function Footer() {
@@ -8,13 +8,6 @@ export default function Footer() {
 
         {/* Brand */}
         <div>
-          <Image
-            src="/images/luxellalogo.jpeg"
-            alt="Luxella Foods"
-            width={60}
-            height={60}
-            className="rounded"
-          />
           <p className="mt-4 text-sm font-medium">
             African food supply you can trust.
           </p>

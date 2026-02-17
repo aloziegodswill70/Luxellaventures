@@ -4,7 +4,7 @@
 export default function CTASection() {
   return (
     <section className="max-w-6xl mx-auto px-4 pb-24 pt-6">
-      <div className="rounded-3xl bg-black text-white p-6 sm:p-10">
+      <div className="rounded-3xl bg-green-500 text-white p-6 sm:p-10">
         <h3 className="text-xl sm:text-3xl font-extrabold">
           Ready to shop? Fresh African groceries in the UK.
         </h3>
