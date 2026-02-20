@@ -1,102 +1,51 @@
-// app/page.js
-"use client";
+import { Suspense } from "react";
 
-import { useState, Suspense } from "react";
 import InfoHeader from "@/components/InfoHeader";
 import Navbar from "@/components/Navbar";
-import HeroCategories from "@/components/HeroCategories";
-import CategorySlider from "@/components/CategorySlider";
-import FilterBar from "@/components/FilterBar";
-import ProductGrid from "@/components/ProductGrid";
-
-// ✅ NEW homepage sections
+import FreshVegPromoSlider from "@/components/home/FreshVegPromoSlider";
 import HomeHero from "@/components/home/HomeHero";
 import FeaturedShowcase from "@/components/home/FeaturedShowcase";
 import FeatureStrip from "@/components/home/FeatureStrip";
 import PromoBanners from "@/components/home/PromoBanners";
 import CTASection from "@/components/home/CTASection";
-
-// ✅ NEW sections we just created
 import HotDealsSection from "@/components/home/HotDealsSection";
 import PopularThisWeekSection from "@/components/home/PopularThisWeekSection";
 import RecommendedForYouSection from "@/components/home/RecommendedForYouSection";
 
+import HomeProductsClient from "@/components/HomeProductsClient";
 
 export default function Home() {
-  // ✅ MUST be lowercase to match ProductGrid logic
-  const [category, setCategory] = useState("all");
-  const [search, setSearch] = useState("");
-  const [sort, setSort] = useState("");
-
   return (
     <>
       <InfoHeader />
       <Navbar />
 
-      {/* ✅ HERO TOP (premium look) */}
-      <HomeHero onShopNow={() => setCategory("all")} />
+      {/* FRESH VEG SLIDER */}
+      <FreshVegPromoSlider />
 
-      {/* ✅ 4 medium-big featured products with "Add to Cart" */}
+      {/* HERO / BANNERS */}
+      <HomeHero />
       <FeaturedShowcase />
-
-      {/* ✅ fast delivery / trust strip */}
       <FeatureStrip />
-
-      {/* 🔥 HOT DEALS (NEW) */}
       <HotDealsSection />
-
-      {/* 🧠 RECOMMENDED (NEW) */}
-      <RecommendedForYouSection activeCategory={category} />
-
-
-      {/* ⭐ POPULAR THIS WEEK (NEW) */}
+      <RecommendedForYouSection />
       <PopularThisWeekSection
         popularIds={[
-          "whole-egusi-1kg",
-          "fresh-okro-box",
+          "egusi-whole",
+          "fresh-okro-box-1kg",
           "fresh-ugu",
           "hake-fish",
-          "uncut-ugba",
-          "ijebu-garri",
+          "ugba",
+          "garri",
         ]}
       />
+      <PromoBanners />
 
-      {/* ✅ REQUIRED Suspense boundary for useSearchParams */}
-      <Suspense fallback={null}>
-        {/* 🔒 STICKY CATEGORY FILTER (TOP) */}
-        <HeroCategories
-          activeCategory={category}
-          onSelectCategory={setCategory}
-        />
-
-        {/* 🔍 SEARCH + SORT */}
-        <FilterBar
-          search={search}
-          setSearch={setSearch}
-          sort={sort}
-          setSort={setSort}
-        />
-
-        {/* ✅ promo cards to populate the page */}
-        <PromoBanners />
-
-        {/* 🛒 PRODUCT GRID */}
-        <div id="products">
-          <ProductGrid
-            category={category}
-            search={search}
-            sort={sort}
-          />
-        </div>
-
-        {/* 🎠 AUTO-SLIDER CATEGORY SECTION (BODY) */}
-        <CategorySlider
-          active={category}
-          onSelect={setCategory}
-        />
+      {/* CLIENT-SIDE FILTER + GRID (wrapped in Suspense) */}
+      <Suspense fallback={<div className="text-center py-10">Loading products...</div>}>
+        <HomeProductsClient initialCategory="all" />
       </Suspense>
 
-      {/* ✅ final CTA */}
       <CTASection />
     </>
   );

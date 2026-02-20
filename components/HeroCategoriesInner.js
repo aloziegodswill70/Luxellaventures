@@ -1,4 +1,3 @@
-// components/HeroCategoriesInner.js
 "use client";
 
 import Image from "next/image";
@@ -21,19 +20,20 @@ function uniqueBy(arr, getKey) {
 }
 
 /** ---------------- category grouping ----------------
- * We are NOT changing product.category values.
- * We only map them into the order/group the client wants.
+ * Maps your product categories to groups
  */
 const CATEGORY_GROUPS_ORDER = [
   { label: "Spices", keys: ["spices", "spice", "seasoning", "condiments"] },
   { label: "Pepper", keys: ["pepper", "peppers"] },
   { label: "Fish", keys: ["fish", "seafood"] },
   { label: "Vegetables", keys: ["vegetables", "vegetable", "leafy", "leaves"] },
-  { label: "Tubers", keys: ["tubers", "yam", "plantain"] },
+  { label: "Tubers", keys: ["tubers", "yam", "plantain", "sweet potatoes"] },
   { label: "Meat", keys: ["meat", "protein", "frozen protein", "chicken"] },
+  { label: "Chicken", keys: ["chicken"] },
+  { label: "Oil", keys: ["oil", "palm oil"] },
 ];
 
-// Find existing product categories and place them into desired group order
+// Build ordered categories based on your product data
 function buildOrderedCategoriesFromProducts(list) {
   const cats = uniqueBy(
     list
@@ -46,7 +46,6 @@ function buildOrderedCategoriesFromProducts(list) {
   const ordered = [];
 
   for (const group of CATEGORY_GROUPS_ORDER) {
-    // pick categories that match this group keys
     const matches = cats.filter((c) =>
       group.keys.some((k) => keyOf(c).includes(k))
     );
@@ -60,7 +59,7 @@ function buildOrderedCategoriesFromProducts(list) {
     }
   }
 
-  // Add any leftover categories at the end (kept unique)
+  // Append any leftover categories at the end
   for (const c of cats) {
     const ck = keyOf(c);
     if (remaining.has(ck)) {
@@ -73,15 +72,12 @@ function buildOrderedCategoriesFromProducts(list) {
 }
 
 /** ---------------- images ---------------- */
-// Pick the first product image for a given category name
 function getCategoryImage(categoryDisplay) {
   const catKey = keyOf(categoryDisplay);
   const p = products.find((x) => keyOf(x.category) === catKey && x.image);
   return p?.image || null;
 }
 
-// Vegetables image rule: DO NOT use tomato.
-// Prefer Ugu, then any veg image that is not tomato.
 function getVegetablesImage(categoryDisplay) {
   const catKey = keyOf(categoryDisplay);
 
@@ -94,7 +90,7 @@ function getVegetablesImage(categoryDisplay) {
   );
   if (ugu?.image) return ugu.image;
 
-  // Otherwise any veg product not tomato
+  // Otherwise pick any veg that's not tomato
   const otherVeg = products.find(
     (p) =>
       keyOf(p.category) === catKey &&
@@ -104,12 +100,11 @@ function getVegetablesImage(categoryDisplay) {
   );
   if (otherVeg?.image) return otherVeg.image;
 
-  // Fallback (still avoid tomato if possible)
+  // Fallback
   const anyVeg = products.find((p) => keyOf(p.category) === catKey && p.image);
   return anyVeg?.image || null;
 }
 
-// "All" collage images: 3 unique images
 function getAllCollageImages() {
   const seen = new Set();
   const imgs = [];
@@ -144,27 +139,20 @@ export default function CategoriesInner({ active, onSelect }) {
 
           let img = null;
           if (cat.value !== "all") {
-            // Special rule: vegetables image must not be tomato
-            if (keyOf(cat.value).includes("vegetables")) {
-              img = getVegetablesImage(cat.value);
-            } else {
-              img = getCategoryImage(cat.value);
-            }
+            img = keyOf(cat.value).includes("vegetables")
+              ? getVegetablesImage(cat.value)
+              : getCategoryImage(cat.value);
           }
 
           return (
             <button
-              key={keyOf(cat.value)} // ✅ unique keys (fixes duplicate key warnings)
+              key={keyOf(cat.value)}
               onClick={() => onSelect(cat.value)}
-              className={`
-                min-w-[45%] sm:min-w-[30%]
-                rounded-xl border transition overflow-hidden
-                ${
-                  isActive
-                    ? "border-orange-400 ring-2 ring-orange-200"
-                    : "border-gray-200 hover:border-orange-300"
-                }
-              `}
+              className={`min-w-[45%] sm:min-w-[30%] rounded-xl border transition overflow-hidden
+                ${isActive
+                  ? "border-orange-400 ring-2 ring-orange-200"
+                  : "border-gray-200 hover:border-orange-300"
+                }`}
             >
               <div className="relative h-24 bg-gray-100">
                 {cat.value === "all" ? (
@@ -198,9 +186,7 @@ export default function CategoriesInner({ active, onSelect }) {
                 )}
               </div>
 
-              <p className="text-center text-sm font-medium py-2">
-                {cat.name}
-              </p>
+              <p className="text-center text-sm font-medium py-2">{cat.name}</p>
             </button>
           );
         })}

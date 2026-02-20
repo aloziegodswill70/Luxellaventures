@@ -1,18 +1,28 @@
+// components/Navbar.js
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import CartBadge from "./CartBadge";
 import { useCart } from "@/context/CartContext";
 
+/**
+ * WHY this file is structured this way:
+ * - Mobile-first top navbar with bold hamburger + logo + right actions.
+ * - Dropdown menu for categories + account links.
+ * - Click-outside + ESC to close menu (better UX on mobile).
+ * - Removed Search + Offers (star) icons as requested.
+ */
+
 const categories = [
-  { name: "Plantain", slug: "plantain" },
+  { name: "Fish", slug: "seafood" },
+  { name: "Meat", slug: "protein" },
+  { name: "Vegetables", slug: "vegetables" },
+  { name: "Spices", slug: "spices" },
   { name: "Tubers", slug: "tubers" },
-  { name: "Grains", slug: "grains" },
-  { name: "Proteins", slug: "proteins" },
-  { name: "Peppers", slug: "peppers" },
-  { name: "Frozen Foods", slug: "frozen" },
+  { name: "Plantain", slug: "plantain" },
 ];
 
 export default function Navbar() {
@@ -21,32 +31,29 @@ export default function Navbar() {
   const { cartCount, setIsCartOpen } = useCart();
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const navItem = (href, icon, isCart = false) => {
-    const isActive = pathname === href;
+  const menuWrapRef = useRef(null);
 
-    if (isCart) {
-      return (
-        <button
-          onClick={() => setIsCartOpen(true)}
-          className="relative flex flex-col items-center"
-        >
-          <span className="text-xl">{icon}</span>
-          {cartCount > 0 && <CartBadge count={cartCount} />}
-        </button>
-      );
-    }
+  // ✅ Close dropdown on outside click + ESC
+  useEffect(() => {
+    const onDown = (e) => {
+      if (!menuOpen) return;
+      const el = menuWrapRef.current;
+      if (el && !el.contains(e.target)) setMenuOpen(false);
+    };
 
-    return (
-      <Link
-        href={href}
-        className={`flex flex-col items-center ${
-          isActive ? "text-orange-500" : "text-gray-700"
-        }`}
-      >
-        <span className="text-xl">{icon}</span>
-      </Link>
-    );
-  };
+    const onKey = (e) => {
+      if (e.key === "Escape") setMenuOpen(false);
+    };
+
+    document.addEventListener("mousedown", onDown);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDown);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [menuOpen]);
+
+  const isActive = (href) => pathname === href;
 
   const handleCategoryClick = (slug) => {
     setMenuOpen(false);
@@ -54,49 +61,132 @@ export default function Navbar() {
   };
 
   return (
-    <nav className="fixed top-0 left-0 w-full bg-white border-b z-[999]">
-      <div className="flex justify-between items-center px-4 h-14 relative">
-
-        {/* ☰ MENU */}
-        <div className="relative">
+    <nav className="fixed top-0 left-0 w-full bg-white/95 backdrop-blur border-b z-[999]">
+      <div className="flex items-center justify-between px-4 h-14">
+        {/* LEFT: Menu + Logo */}
+        <div ref={menuWrapRef} className="relative flex items-center gap-3">
+          {/* ✅ Bold hamburger (not large) */}
           <button
-            onClick={() => setMenuOpen((prev) => !prev)}
-            className="flex flex-col items-center text-gray-700"
+            onClick={() => setMenuOpen((p) => !p)}
+            aria-label="Open menu"
+            className="w-10 h-10 grid place-items-center rounded-lg active:scale-95 transition"
           >
-            <span className="text-xl">☰</span>
+            <span className="sr-only">Menu</span>
+            <span className="block w-5">
+              <span className="block h-[2.5px] bg-gray-900 rounded-full mb-1.5" />
+              <span className="block h-[2.5px] bg-gray-900 rounded-full mb-1.5" />
+              <span className="block h-[2.5px] bg-gray-900 rounded-full" />
+            </span>
           </button>
 
+          {/* ✅ Logo beside menu */}
+          <Link
+            href="/"
+            onClick={() => setMenuOpen(false)}
+            className="flex items-center gap-2"
+            aria-label="Go to home"
+          >
+            {/* Replace with your real logo path */}
+            <div className="relative w-9 h-9 rounded-lg overflow-hidden border bg-white">
+              <Image
+                src="/images/luxellalogo1.png"
+                alt="Luxella Foods"
+                fill
+                className="object-contain"
+                sizes="36px"
+                priority
+              />
+            </div>
+            <div className="hidden sm:block leading-tight">
+              <p className="text-sm font-extrabold text-gray-900">Luxella</p>
+              <p className="text-[11px] text-gray-500 -mt-0.5">African Foods UK</p>
+            </div>
+          </Link>
+
+          {/* Dropdown */}
           {menuOpen && (
-            <div className="absolute left-0 top-12 bg-white border rounded-lg shadow-lg w-48 z-[1000]">
-              {categories.map((cat) => (
-                <button
-                  key={cat.slug}
-                  onClick={() => handleCategoryClick(cat.slug)}
-                  className="w-full text-left px-4 py-2 text-sm hover:bg-gray-100"
+            <div className="absolute left-0 top-[52px] w-[78vw] max-w-[320px] bg-white border rounded-2xl shadow-xl overflow-hidden z-[1000]">
+              <div className="px-4 py-3 border-b">
+                <p className="text-sm font-bold text-gray-900">Shop Categories</p>
+                <p className="text-xs text-gray-500">Quickly jump to products</p>
+              </div>
+
+              <div className="py-2">
+                {categories.map((cat) => (
+                  <button
+                    key={cat.slug}
+                    onClick={() => handleCategoryClick(cat.slug)}
+                    className="w-full text-left px-4 py-3 text-sm font-semibold text-gray-800 hover:bg-gray-50 active:bg-gray-100 transition"
+                  >
+                    {cat.name}
+                  </button>
+                ))}
+              </div>
+
+              <div className="border-t" />
+
+              <div className="py-2">
+                <Link
+                  href="/login"
+                  onClick={() => setMenuOpen(false)}
+                  className="block px-4 py-3 text-sm font-semibold text-gray-800 hover:bg-gray-50 active:bg-gray-100"
                 >
-                  {cat.name}
-                </button>
-              ))}
-
-              <div className="border-t my-1" />
-
-              <Link href="/search" className="block px-4 py-2 text-sm hover:bg-gray-100">
-                🔍 Search
-              </Link>
-              <Link href="/offers" className="block px-4 py-2 text-sm hover:bg-gray-100">
-                ⭐ Offers
-              </Link>
-              <Link href="/login" className="block px-4 py-2 text-sm hover:bg-gray-100">
-                👤 Account
-              </Link>
+                  Account
+                </Link>
+              </div>
             </div>
           )}
         </div>
 
-        {navItem("/search", "🔍")}
-        {navItem("/cart", "🛒", true)}
-        {navItem("/login", "👤")}
-        {navItem("/offers", "⭐")}
+        {/* RIGHT: Cart + Profile (removed Search + Star/Offers) */}
+        <div className="flex items-center gap-2">
+          {/* Cart */}
+          <button
+            onClick={() => setIsCartOpen(true)}
+            className="relative w-10 h-10 rounded-lg grid place-items-center active:scale-95 transition"
+            aria-label="Open cart"
+          >
+            {/* Simple clean cart icon */}
+            <svg
+              viewBox="0 0 24 24"
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <circle cx="9" cy="20" r="1" />
+              <circle cx="17" cy="20" r="1" />
+              <path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.6L21 8H7" />
+            </svg>
+
+            {cartCount > 0 && <CartBadge count={cartCount} />}
+          </button>
+
+          {/* Profile */}
+          <Link
+            href="/login"
+            className={`w-10 h-10 rounded-lg grid place-items-center active:scale-95 transition ${
+              isActive("/login") ? "text-orange-600" : "text-gray-800"
+            }`}
+            aria-label="Account"
+          >
+            {/* Clean user icon */}
+            <svg
+              viewBox="0 0 24 24"
+              className="w-6 h-6"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M20 21a8 8 0 0 0-16 0" />
+              <circle cx="12" cy="7" r="4" />
+            </svg>
+          </Link>
+        </div>
       </div>
     </nav>
   );
