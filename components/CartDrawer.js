@@ -30,7 +30,7 @@ ${cartItems
 Total: £${cartTotal.toFixed(2)}
 `;
 
-  const whatsappLink = `https://wa.me/447000000000?text=${encodeURIComponent(
+  const whatsappLink = `https://wa.me/447344447897?text=${encodeURIComponent(
     whatsappMessage
   )}`;
 

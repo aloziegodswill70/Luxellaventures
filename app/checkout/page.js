@@ -21,7 +21,14 @@ export default function CheckoutPage() {
   const { cartItems, cartTotal } = useCart();
   const [loading, setLoading] = useState(false);
 
-  const [contact, setContact] = useState({ fullName: "", phone: "", email: "" });
+  // ✅ FORM 1: Contact Information
+  const [contact, setContact] = useState({
+    fullName: "",
+    phone: "",
+    email: "",
+  });
+
+  // ✅ FORM 2: Shipping Address + Terms
   const [shipping, setShipping] = useState({
     address: "",
     postalCode: "",
@@ -71,7 +78,7 @@ export default function CheckoutPage() {
     // Delivery fee logic: only London addresses get extra fee
     const deliveryFee =
       shipping.cityTown?.toLowerCase().includes("london") && subtotal > 0
-        ? 5.0 // e.g., €5 delivery
+        ? 5.0
         : 0;
 
     const total = Number(cartTotal || subtotal) + deliveryFee;
@@ -138,12 +145,14 @@ Total Weight: ${Number(summary.totalWeightKg).toFixed(2)}kg%0A
     window.open(`https://wa.me/447344447897?text=${message}`, "_blank");
   };
 
-  if (cartItems.length === 0) return <div className="text-center py-20 text-gray-500">Your cart is empty.</div>;
+  if (cartItems.length === 0)
+    return <div className="text-center py-20 text-gray-500">Your cart is empty.</div>;
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10 grid lg:grid-cols-2 gap-8">
-      {/* LEFT: Forms */}
+      {/* LEFT: Contact + Shipping Forms */}
       <div className="space-y-6">
+        {/* Delivery Notice */}
         <div className="bg-white border rounded-xl p-6">
           <h2 className="text-lg font-bold mb-1">Delivery Notice</h2>
           <p className="text-sm text-gray-500 mb-2">
@@ -156,11 +165,93 @@ Total Weight: ${Number(summary.totalWeightKg).toFixed(2)}kg%0A
           )}
         </div>
 
-        {/* Contact + Shipping forms remain unchanged */}
-        {/* ... existing code for contact and shipping forms ... */}
+        {/* ✅ Contact Information Form */}
+        <div className="bg-white border rounded-xl p-6 space-y-4">
+          <h2 className="text-lg font-bold mb-2">Contact Information</h2>
+          <input
+            type="text"
+            name="fullName"
+            placeholder="Full Name"
+            value={contact.fullName}
+            onChange={handleContactChange}
+            className="w-full border rounded-lg px-3 py-2"
+          />
+          <input
+            type="tel"
+            name="phone"
+            placeholder="Phone Number"
+            value={contact.phone}
+            onChange={handleContactChange}
+            className="w-full border rounded-lg px-3 py-2"
+          />
+          <input
+            type="email"
+            name="email"
+            placeholder="Email (optional)"
+            value={contact.email}
+            onChange={handleContactChange}
+            className="w-full border rounded-lg px-3 py-2"
+          />
+        </div>
+
+        {/* ✅ Shipping Address Form */}
+        <div className="bg-white border rounded-xl p-6 space-y-4">
+          <h2 className="text-lg font-bold mb-2">Shipping Address</h2>
+          <input
+            type="text"
+            name="address"
+            placeholder="Address"
+            value={shipping.address}
+            onChange={handleShippingChange}
+            className="w-full border rounded-lg px-3 py-2"
+          />
+          <input
+            type="text"
+            name="postalCode"
+            placeholder="Postal Code"
+            value={shipping.postalCode}
+            onChange={handleShippingChange}
+            className="w-full border rounded-lg px-3 py-2"
+          />
+          <input
+            type="text"
+            name="cityTown"
+            placeholder="City / Town"
+            value={shipping.cityTown}
+            onChange={handleShippingChange}
+            className="w-full border rounded-lg px-3 py-2"
+          />
+          <input
+            type="text"
+            name="state"
+            placeholder="State"
+            value={shipping.state}
+            onChange={handleShippingChange}
+            className="w-full border rounded-lg px-3 py-2"
+          />
+          <input
+            type="text"
+            name="country"
+            placeholder="Country"
+            value={shipping.country}
+            onChange={handleShippingChange}
+            className="w-full border rounded-lg px-3 py-2"
+          />
+
+          <label className="flex items-center gap-2">
+            <input
+              type="checkbox"
+              name="agree"
+              checked={shipping.agree}
+              onChange={handleShippingChange}
+              className="form-checkbox h-4 w-4"
+            />
+            <span className="text-sm text-gray-700">I agree to the Terms & Conditions</span>
+          </label>
+        </div>
       </div>
 
-      {/* RIGHT: Stripe summary */}
+      {/* RIGHT: Stripe summary + Checkout */}
       <div className="bg-gray-50 border rounded-xl p-6 h-fit">
         <h2 className="text-lg font-bold mb-4">Stripe Checkout</h2>
 

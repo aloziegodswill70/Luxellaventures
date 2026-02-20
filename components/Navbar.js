@@ -1,20 +1,11 @@
-// components/Navbar.js
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import Link from "next/link";
+import Link from "next/link"; // ✅ make sure this is imported
 import Image from "next/image";
 import { usePathname, useRouter } from "next/navigation";
 import CartBadge from "./CartBadge";
 import { useCart } from "@/context/CartContext";
-
-/**
- * WHY this file is structured this way:
- * - Mobile-first top navbar with bold hamburger + logo + right actions.
- * - Dropdown menu for categories + account links.
- * - Click-outside + ESC to close menu (better UX on mobile).
- * - Removed Search + Offers (star) icons as requested.
- */
 
 const categories = [
   { name: "Fish", slug: "seafood" },
@@ -33,18 +24,16 @@ export default function Navbar() {
 
   const menuWrapRef = useRef(null);
 
-  // ✅ Close dropdown on outside click + ESC
+  // Close dropdown on outside click + ESC
   useEffect(() => {
     const onDown = (e) => {
       if (!menuOpen) return;
       const el = menuWrapRef.current;
       if (el && !el.contains(e.target)) setMenuOpen(false);
     };
-
     const onKey = (e) => {
       if (e.key === "Escape") setMenuOpen(false);
     };
-
     document.addEventListener("mousedown", onDown);
     document.addEventListener("keydown", onKey);
     return () => {
@@ -54,7 +43,6 @@ export default function Navbar() {
   }, [menuOpen]);
 
   const isActive = (href) => pathname === href;
-
   const handleCategoryClick = (slug) => {
     setMenuOpen(false);
     router.push(`/?category=${slug}`);
@@ -65,7 +53,7 @@ export default function Navbar() {
       <div className="flex items-center justify-between px-4 h-14">
         {/* LEFT: Menu + Logo */}
         <div ref={menuWrapRef} className="relative flex items-center gap-3">
-          {/* ✅ Bold hamburger (not large) */}
+          {/* Hamburger */}
           <button
             onClick={() => setMenuOpen((p) => !p)}
             aria-label="Open menu"
@@ -79,17 +67,16 @@ export default function Navbar() {
             </span>
           </button>
 
-          {/* ✅ Logo beside menu */}
+          {/* Logo */}
           <Link
             href="/"
             onClick={() => setMenuOpen(false)}
             className="flex items-center gap-2"
             aria-label="Go to home"
           >
-            {/* Replace with your real logo path */}
             <div className="relative w-9 h-9 rounded-lg overflow-hidden border bg-white">
               <Image
-                src="/images/luxellalogo1.png"
+                src="https://res.cloudinary.com/dut0fvswc/image/upload/v1771550892/luxellalogo-removebg-preview_zzpj4q.png" // <-- replace with Cloudinary link
                 alt="Luxella Foods"
                 fill
                 className="object-contain"
@@ -103,14 +90,13 @@ export default function Navbar() {
             </div>
           </Link>
 
-          {/* Dropdown */}
+          {/* Dropdown menu */}
           {menuOpen && (
             <div className="absolute left-0 top-[52px] w-[78vw] max-w-[320px] bg-white border rounded-2xl shadow-xl overflow-hidden z-[1000]">
               <div className="px-4 py-3 border-b">
                 <p className="text-sm font-bold text-gray-900">Shop Categories</p>
                 <p className="text-xs text-gray-500">Quickly jump to products</p>
               </div>
-
               <div className="py-2">
                 {categories.map((cat) => (
                   <button
@@ -122,9 +108,7 @@ export default function Navbar() {
                   </button>
                 ))}
               </div>
-
               <div className="border-t" />
-
               <div className="py-2">
                 <Link
                   href="/login"
@@ -138,15 +122,13 @@ export default function Navbar() {
           )}
         </div>
 
-        {/* RIGHT: Cart + Profile (removed Search + Star/Offers) */}
+        {/* RIGHT: Cart + Profile */}
         <div className="flex items-center gap-2">
-          {/* Cart */}
           <button
             onClick={() => setIsCartOpen(true)}
             className="relative w-10 h-10 rounded-lg grid place-items-center active:scale-95 transition"
             aria-label="Open cart"
           >
-            {/* Simple clean cart icon */}
             <svg
               viewBox="0 0 24 24"
               className="w-6 h-6"
@@ -160,11 +142,9 @@ export default function Navbar() {
               <circle cx="17" cy="20" r="1" />
               <path d="M3 4h2l2.2 10.2a2 2 0 0 0 2 1.6h7.8a2 2 0 0 0 2-1.6L21 8H7" />
             </svg>
-
             {cartCount > 0 && <CartBadge count={cartCount} />}
           </button>
 
-          {/* Profile */}
           <Link
             href="/login"
             className={`w-10 h-10 rounded-lg grid place-items-center active:scale-95 transition ${
@@ -172,7 +152,6 @@ export default function Navbar() {
             }`}
             aria-label="Account"
           >
-            {/* Clean user icon */}
             <svg
               viewBox="0 0 24 24"
               className="w-6 h-6"

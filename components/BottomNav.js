@@ -35,34 +35,26 @@ export default function BottomNav() {
         z-[9999]
       "
     >
-      <div className="flex justify-around items-center h-16">
+      <div className="flex justify-between items-center h-16 px-4">
         
         {/* Home */}
         {navLink("/", "🏠")}
 
         {/* Categories */}
-        <button
-          onClick={() =>
-            document
-              .querySelector("#categories")
-              ?.scrollIntoView({ behavior: "smooth" })
-          }
+        <Link
+          href="#categories"
           className="flex flex-col items-center text-gray-500 active:scale-95 transition"
         >
           <span className="text-2xl">📦</span>
-        </button>
+        </Link>
 
         {/* Products */}
-        <button
-          onClick={() =>
-            document
-              .querySelector("#products")
-              ?.scrollIntoView({ behavior: "smooth" })
-          }
+        <Link
+          href="#products"
           className="flex flex-col items-center text-gray-500 active:scale-95 transition"
         >
           <span className="text-2xl">🛍</span>
-        </button>
+        </Link>
 
         {/* Delivery */}
         {navLink("/delivery", "🚚")}
