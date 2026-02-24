@@ -1,104 +1,109 @@
 "use client";
 
 import Image from "next/image";
-import { useRef } from "react";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
-// Replace with your actual Cloudinary URLs
 const slides = [
   {
     id: 1,
-    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1771550896/freshuziza_jubqvd.png",
+    image:
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771550896/freshuziza_jubqvd.png",
     title: "Fresh Uziza Leaves",
     promo: "20% OFF Today",
   },
   {
     id: 2,
-    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1771550900/freshoha_wjqp7o.png",
+    image:
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771550900/freshoha_wjqp7o.png",
     title: "Fresh Oha Leaves",
     promo: "20% OFF Today",
   },
   {
     id: 3,
-    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1771550899/freshbitterleaf_dgyf0e.png",
+    image:
+      "https://res.cloudinary.com/dut0fvswc/image/upload/v1771550899/freshbitterleaf_dgyf0e.png",
     title: "Fresh Bitterleaf",
+    promo: "20% OFF Today",
+  },
+
+  // ✅ NEW PRODUCTS ADDED BELOW (Replace image links)
+
+  {
+    id: 4,
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1771756441/turkey_wings_j57ljk.png",
+    title: "Turkey Wings",
+    promo: "20% OFF Today",
+  },
+  {
+    id: 5,
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1771756441/special_goatmeat_tfnwjn.png",
+    title: "Special Goat Meat",
+    promo: "20% OFF Today",
+  },
+  {
+    id: 6,
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1771756438/jumbo_snail_awqgqv.jpg",
+    title: "Jumbo Snail",
+    promo: "20% OFF Today",
+  },
+  {
+    id: 7,
+    image: "https://res.cloudinary.com/dut0fvswc/image/upload/v1771756437/fresh_fufu_ozxmie.jpg",
+    title: "Fresh Fufu",
     promo: "20% OFF Today",
   },
 ];
 
 export default function FreshVegPromoSlider() {
-  const sliderRef = useRef(null);
+  const [current, setCurrent] = useState(0);
 
-  const scroll = (direction) => {
-    if (!sliderRef.current) return;
-    const width = sliderRef.current.offsetWidth;
-    sliderRef.current.scrollBy({
-      left: direction === "left" ? -width / 2 : width / 2,
-      behavior: "smooth",
-    });
-  };
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrent((prev) => (prev + 1) % slides.length);
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   return (
-    <section className="px-4 mt-4">
-      <h2 className="text-lg sm:text-xl font-bold mb-3 px-1">Latest Fresh Vegetables</h2>
+    <section className="w-full mt-24 sm:mt-28 md:mt-32 px-4 overflow-hidden">
+      <div
+        className="flex transition-transform duration-700 ease-in-out"
+        style={{ transform: `translateX(-${current * 100}%)` }}
+      >
+        {slides.map((slide) => (
+          <div
+            key={slide.id}
+            className="min-w-full sm:min-w-[50%] md:min-w-[33.333%] px-2"
+          >
+            <Link href="/new-products">
+              <div className="relative h-[260px] sm:h-[320px] md:h-[380px] rounded-2xl overflow-hidden shadow-xl">
+                <Image
+                  src={slide.image}
+                  alt={slide.title}
+                  fill
+                  className="object-cover"
+                  sizes="(max-width:768px) 100vw, 33vw"
+                />
 
-      <div className="relative">
-        {/* Slider container */}
-        <div
-          ref={sliderRef}
-          className="flex gap-4 overflow-x-auto scrollbar-hide py-2 scroll-smooth"
-        >
-          {slides.map((slide) => (
-            <div
-              key={slide.id}
-              className="relative flex-none w-48 sm:w-56 md:w-60 lg:w-64 h-56 sm:h-60 md:h-64 lg:h-72 rounded-2xl overflow-hidden shadow-lg"
-            >
-              <Image
-                src={slide.image}
-                alt={slide.title}
-                fill
-                className="object-cover"
-                sizes="(max-width: 640px) 50vw, (max-width: 1024px) 30vw, 20vw"
-                priority
-              />
+                <div className="absolute inset-0 bg-black/40 flex flex-col justify-center items-center text-center px-4">
+                  <h2 className="text-white text-lg sm:text-2xl font-bold">
+                    {slide.title}
+                  </h2>
 
-              {/* Overlay */}
-              <div className="absolute inset-0 bg-black/30 flex flex-col justify-end p-3">
-                <h3 className="text-white text-sm sm:text-base font-semibold leading-snug truncate">
-                  {slide.title}
-                </h3>
-                <p className="text-white text-xs sm:text-sm mt-1">{slide.promo}</p>
+                  <p className="text-orange-400 text-sm sm:text-base mt-2 font-semibold">
+                    {slide.promo}
+                  </p>
 
-                {/* Shop Now button */}
-                <button
-                  onClick={() =>
-                    document
-                      .querySelector("#products")
-                      ?.scrollIntoView({ behavior: "smooth" })
-                  }
-                  className="mt-2 bg-orange-500 hover:bg-orange-600 text-white text-xs sm:text-sm px-3 py-1 rounded-md transition self-start"
-                >
-                  Shop Now
-                </button>
+                  <button className="mt-4 bg-orange-500 hover:bg-orange-600 text-white px-5 py-2 rounded-full text-sm transition">
+                    Shop Now
+                  </button>
+                </div>
               </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Left arrow */}
-        <button
-          onClick={() => scroll("left")}
-          className="absolute top-1/2 -translate-y-1/2 left-0 bg-white/80 hover:bg-white/100 rounded-full p-2 shadow-md z-10 md:hidden"
-        >
-          ◀
-        </button>
-
-        {/* Right arrow */}
-        <button
-          onClick={() => scroll("right")}
-          className="absolute top-1/2 -translate-y-1/2 right-0 bg-white/80 hover:bg-white/100 rounded-full p-2 shadow-md z-10 md:hidden"
-        >
-          ▶
-        </button>
+            </Link>
+          </div>
+        ))}
       </div>
     </section>
   );

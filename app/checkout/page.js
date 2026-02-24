@@ -1,34 +1,44 @@
 "use client";
 
 import { useCart } from "@/context/CartContext";
-import CheckoutItem from "@/components/CheckoutItem";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
+
+/* ---------------- HELPERS ---------------- */
 
 function getItemWeightKg(item) {
   const text = `${item?.unit || ""} ${item?.name || ""}`.toLowerCase();
+
   const kgMatch = text.match(/(\d+(\.\d+)?)\s*kg/);
   if (kgMatch?.[1]) return Number(kgMatch[1]);
+
   const gMatch = text.match(/(\d+(\.\d+)?)\s*g/);
   if (gMatch?.[1]) return Number(gMatch[1]) / 1000;
+
   return 0.5;
 }
 
-function formatEUR(amount) {
-  return `€${Number(amount || 0).toFixed(2)}`;
+function formatGBP(amount) {
+  return `£${Number(amount || 0).toFixed(2)}`;
 }
 
+/* ================= COMPONENT ================= */
+
 export default function CheckoutPage() {
-  const { cartItems, cartTotal } = useCart();
+  const { cartItems } = useCart();
+
+  const [isHydrated, setIsHydrated] = useState(false);
   const [loading, setLoading] = useState(false);
 
-  // ✅ FORM 1: Contact Information
+  const [deliveryFee, setDeliveryFee] = useState(0);
+  const [deliveryLoading, setDeliveryLoading] = useState(false);
+  const [deliveryError, setDeliveryError] = useState("");
+
   const [contact, setContact] = useState({
     fullName: "",
     phone: "",
     email: "",
   });
 
-  // ✅ FORM 2: Shipping Address + Terms
   const [shipping, setShipping] = useState({
     address: "",
     postalCode: "",
@@ -38,6 +48,14 @@ export default function CheckoutPage() {
     agree: false,
   });
 
+  /* ---------------- HYDRATION ---------------- */
+
+  useEffect(() => {
+    setIsHydrated(true);
+  }, []);
+
+  /* ---------------- HANDLERS ---------------- */
+
   const handleContactChange = (e) => {
     const { name, value } = e.target;
     setContact((prev) => ({ ...prev, [name]: value }));
@@ -45,259 +63,300 @@ export default function CheckoutPage() {
 
   const handleShippingChange = (e) => {
     const { name, value, type, checked } = e.target;
-    setShipping((prev) => ({ ...prev, [name]: type === "checkbox" ? checked : value }));
+    setShipping((prev) => ({
+      ...prev,
+      [name]: type === "checkbox" ? checked : value,
+    }));
   };
+
+  /* ---------------- DELIVERY ---------------- */
+
+  useEffect(() => {
+    if (!isHydrated) return;
+
+    const fetchDelivery = async () => {
+      if (!shipping.postalCode.trim()) {
+        setDeliveryFee(0);
+        setDeliveryError("");
+        return;
+      }
+
+      try {
+        setDeliveryLoading(true);
+        setDeliveryError("");
+
+        const res = await fetch("/api/calculate-delivery", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ postcode: shipping.postalCode }),
+        });
+
+        const data = await res.json();
+
+        if (!res.ok) {
+          setDeliveryFee(0);
+          setDeliveryError(data.error || "Delivery unavailable");
+        } else {
+          setDeliveryFee(Number(data.deliveryFee || 0));
+        }
+      } catch {
+        setDeliveryFee(0);
+        setDeliveryError("Delivery calculation failed");
+      } finally {
+        setDeliveryLoading(false);
+      }
+    };
+
+    fetchDelivery();
+  }, [shipping.postalCode, isHydrated]);
+
+  /* ---------------- VALIDATION ---------------- */
 
   const requiredMissing = useMemo(() => {
     const missing = [];
-    if (!String(contact.fullName || "").trim()) missing.push("Full Name");
-    if (!String(contact.phone || "").trim()) missing.push("Phone Number");
-    if (!String(shipping.address || "").trim()) missing.push("Address");
-    if (!String(shipping.postalCode || "").trim()) missing.push("Postal Code");
-    if (!String(shipping.cityTown || "").trim()) missing.push("City/Town");
-    if (!String(shipping.state || "").trim()) missing.push("State");
-    if (!String(shipping.country || "").trim()) missing.push("Country");
-    if (!shipping.agree) missing.push("Terms & Conditions Agreement");
+
+    if (!contact.fullName.trim()) missing.push("Full Name");
+    if (!contact.phone.trim()) missing.push("Phone Number");
+    if (!shipping.address.trim()) missing.push("Address");
+    if (!shipping.postalCode.trim()) missing.push("Postal Code");
+    if (!shipping.cityTown.trim()) missing.push("City/Town");
+    if (!shipping.state.trim()) missing.push("State");
+    if (!shipping.country.trim()) missing.push("Country");
+    if (!shipping.agree) missing.push("Terms Agreement");
+
     return missing;
   }, [contact, shipping]);
 
   const isFormValid = requiredMissing.length === 0;
 
-  // ------------------- Stripe summary + delivery fee -------------------
+  /* ---------------- SUMMARY ---------------- */
+
   const summary = useMemo(() => {
     const lines = cartItems.map((item) => {
+      const qty = Number(item.qty || 0);
+      const price = Number(item.price || 0);
       const unitWeightKg = getItemWeightKg(item);
-      const subWeightKg = unitWeightKg * (item.qty || 0);
-      const subTotal = Number(item.price || 0) * (item.qty || 0);
-      return { id: item.id, name: item.name, qty: item.qty || 0, unit: item.unit || "", unitWeightKg, subWeightKg, subTotal };
+
+      return {
+        id: item.id,
+        name: item.name,
+        qty,
+        subTotal: price * qty,
+        subWeightKg: unitWeightKg * qty,
+      };
     });
 
-    const totalWeightKg = lines.reduce((acc, l) => acc + l.subWeightKg, 0);
     const subtotal = lines.reduce((acc, l) => acc + l.subTotal, 0);
+    const totalWeightKg = lines.reduce((acc, l) => acc + l.subWeightKg, 0);
+    const total = subtotal + deliveryFee;
 
-    // Delivery fee logic: only London addresses get extra fee
-    const deliveryFee =
-      shipping.cityTown?.toLowerCase().includes("london") && subtotal > 0
-        ? 5.0
-        : 0;
+    return { lines, subtotal, totalWeightKg, total };
+  }, [cartItems, deliveryFee]);
 
-    const total = Number(cartTotal || subtotal) + deliveryFee;
-
-    return { lines, subtotal, total, totalWeightKg, deliveryFee };
-  }, [cartItems, cartTotal, shipping.cityTown]);
+  /* ---------------- STRIPE ---------------- */
 
   const handleStripeCheckout = async () => {
     if (!isFormValid) {
       alert(`Please complete: ${requiredMissing.join(", ")}`);
       return;
     }
+
     if (!cartItems.length) {
       alert("Your cart is empty.");
       return;
     }
-    setLoading(true);
+
+    if (deliveryError) {
+      alert("Delivery unavailable for this postcode.");
+      return;
+    }
 
     try {
+      setLoading(true);
+
       const res = await fetch("/api/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           cartItems,
-          customer: { contact, shipping, summary },
+          customer: { contact, shipping },
         }),
       });
 
       const data = await res.json();
+
       if (!res.ok) {
-        console.error("Checkout API error:", data);
-        alert(data?.error || "Payment initialization failed");
+        alert(data?.error || "Payment failed");
         setLoading(false);
         return;
       }
+
       if (data?.url) window.location.href = data.url;
-      else {
-        alert("Payment initialization failed");
-        setLoading(false);
-      }
-    } catch (err) {
-      console.error(err);
+    } catch {
       alert("Something went wrong");
       setLoading(false);
     }
   };
 
-  const whatsappOrder = () => {
-    const itemsText = cartItems
-      .map((i) => `${i.name} x${i.qty} = ${formatEUR(Number(i.price || 0) * Number(i.qty || 0))}`)
-      .join("%0A");
+  /* ---------------- RENDER ---------------- */
 
-    const message = `New Order%0A
-Name: ${contact.fullName}%0A
-Phone: ${contact.phone}%0A
-Email: ${contact.email || "-"}%0A
-Address: ${shipping.address}, ${shipping.cityTown}, ${shipping.state}, ${shipping.postalCode}, ${shipping.country}%0A
-%0AOrder:%0A${itemsText}%0A
-%0ASubtotal: ${formatEUR(summary.subtotal)}%0A
-Delivery Fee: ${formatEUR(summary.deliveryFee)}%0A
-Total Weight: ${Number(summary.totalWeightKg).toFixed(2)}kg%0A
-%0ATotal: ${formatEUR(summary.total)}`;
-
-    window.open(`https://wa.me/447344447897?text=${message}`, "_blank");
-  };
-
-  if (cartItems.length === 0)
-    return <div className="text-center py-20 text-gray-500">Your cart is empty.</div>;
+  if (!isHydrated) return null;
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10 grid lg:grid-cols-2 gap-8">
-      {/* LEFT: Contact + Shipping Forms */}
-      <div className="space-y-6">
-        {/* Delivery Notice */}
-        <div className="bg-white border rounded-xl p-6">
-          <h2 className="text-lg font-bold mb-1">Delivery Notice</h2>
-          <p className="text-sm text-gray-500 mb-2">
-            Deliveries are <span className="font-semibold">only done in London</span>. Please take care of your delivery logistics outside London.
-          </p>
-          {summary.deliveryFee > 0 && (
-            <p className="text-sm text-orange-600 font-semibold">
-              Extra delivery price for London addresses: {formatEUR(summary.deliveryFee)}
-            </p>
-          )}
+
+      {cartItems.length === 0 ? (
+        <div className="text-center py-20 text-gray-500 w-full">
+          Your cart is empty.
         </div>
+      ) : (
+        <>
+          {/* LEFT SIDE — FORM */}
+          <div className="space-y-6">
 
-        {/* ✅ Contact Information Form */}
-        <div className="bg-white border rounded-xl p-6 space-y-4">
-          <h2 className="text-lg font-bold mb-2">Contact Information</h2>
-          <input
-            type="text"
-            name="fullName"
-            placeholder="Full Name"
-            value={contact.fullName}
-            onChange={handleContactChange}
-            className="w-full border rounded-lg px-3 py-2"
-          />
-          <input
-            type="tel"
-            name="phone"
-            placeholder="Phone Number"
-            value={contact.phone}
-            onChange={handleContactChange}
-            className="w-full border rounded-lg px-3 py-2"
-          />
-          <input
-            type="email"
-            name="email"
-            placeholder="Email (optional)"
-            value={contact.email}
-            onChange={handleContactChange}
-            className="w-full border rounded-lg px-3 py-2"
-          />
-        </div>
+            <h2 className="text-xl font-bold">Contact Information</h2>
 
-        {/* ✅ Shipping Address Form */}
-        <div className="bg-white border rounded-xl p-6 space-y-4">
-          <h2 className="text-lg font-bold mb-2">Shipping Address</h2>
-          <input
-            type="text"
-            name="address"
-            placeholder="Address"
-            value={shipping.address}
-            onChange={handleShippingChange}
-            className="w-full border rounded-lg px-3 py-2"
-          />
-          <input
-            type="text"
-            name="postalCode"
-            placeholder="Postal Code"
-            value={shipping.postalCode}
-            onChange={handleShippingChange}
-            className="w-full border rounded-lg px-3 py-2"
-          />
-          <input
-            type="text"
-            name="cityTown"
-            placeholder="City / Town"
-            value={shipping.cityTown}
-            onChange={handleShippingChange}
-            className="w-full border rounded-lg px-3 py-2"
-          />
-          <input
-            type="text"
-            name="state"
-            placeholder="State"
-            value={shipping.state}
-            onChange={handleShippingChange}
-            className="w-full border rounded-lg px-3 py-2"
-          />
-          <input
-            type="text"
-            name="country"
-            placeholder="Country"
-            value={shipping.country}
-            onChange={handleShippingChange}
-            className="w-full border rounded-lg px-3 py-2"
-          />
-
-          <label className="flex items-center gap-2">
             <input
-              type="checkbox"
-              name="agree"
-              checked={shipping.agree}
-              onChange={handleShippingChange}
-              className="form-checkbox h-4 w-4"
+              type="text"
+              name="fullName"
+              placeholder="Full Name"
+              value={contact.fullName}
+              onChange={handleContactChange}
+              className="w-full border p-3 rounded"
             />
-            <span className="text-sm text-gray-700">I agree to the Terms & Conditions</span>
-          </label>
-        </div>
-      </div>
 
-      {/* RIGHT: Stripe summary + Checkout */}
-      <div className="bg-gray-50 border rounded-xl p-6 h-fit">
-        <h2 className="text-lg font-bold mb-4">Stripe Checkout</h2>
+            <input
+              type="text"
+              name="phone"
+              placeholder="Phone Number"
+              value={contact.phone}
+              onChange={handleContactChange}
+              className="w-full border p-3 rounded"
+            />
 
-        <div className="space-y-4 mb-6">
-          {cartItems.map((item) => (
-            <CheckoutItem key={item.id} item={item} />
-          ))}
-        </div>
+            <input
+              type="email"
+              name="email"
+              placeholder="Email (optional)"
+              value={contact.email}
+              onChange={handleContactChange}
+              className="w-full border p-3 rounded"
+            />
 
-        <div className="border-t pt-4 space-y-3">
-          <div className="flex justify-between text-sm font-semibold">
-            <span>Subtotal</span>
-            <span>{formatEUR(summary.subtotal)}</span>
+            <h2 className="text-xl font-bold pt-6">Shipping Address</h2>
+
+            <input
+              type="text"
+              name="address"
+              placeholder="Street Address"
+              value={shipping.address}
+              onChange={handleShippingChange}
+              className="w-full border p-3 rounded"
+            />
+
+            <input
+              type="text"
+              name="postalCode"
+              placeholder="Postal Code"
+              value={shipping.postalCode}
+              onChange={handleShippingChange}
+              className="w-full border p-3 rounded"
+            />
+
+            {deliveryLoading && (
+              <p className="text-sm text-gray-500">Calculating delivery...</p>
+            )}
+
+            {deliveryError && (
+              <p className="text-sm text-red-500">{deliveryError}</p>
+            )}
+
+            <input
+              type="text"
+              name="cityTown"
+              placeholder="City / Town"
+              value={shipping.cityTown}
+              onChange={handleShippingChange}
+              className="w-full border p-3 rounded"
+            />
+
+            <input
+              type="text"
+              name="state"
+              placeholder="State"
+              value={shipping.state}
+              onChange={handleShippingChange}
+              className="w-full border p-3 rounded"
+            />
+
+            <input
+              type="text"
+              name="country"
+              placeholder="Country"
+              value={shipping.country}
+              onChange={handleShippingChange}
+              className="w-full border p-3 rounded"
+            />
+
+            <label className="flex items-center gap-2 pt-4">
+              <input
+                type="checkbox"
+                name="agree"
+                checked={shipping.agree}
+                onChange={handleShippingChange}
+              />
+              I agree to the Terms & Conditions
+            </label>
+
           </div>
-          {summary.deliveryFee > 0 && (
-            <div className="flex justify-between text-sm font-semibold">
-              <span>Delivery Fee (London)</span>
-              <span>{formatEUR(summary.deliveryFee)}</span>
+
+          {/* RIGHT SIDE — SUMMARY */}
+          <div className="border rounded-lg p-6 space-y-4 h-fit">
+            <h2 className="text-xl font-bold">Order Summary</h2>
+
+            {summary.lines.map((item) => (
+              <div key={item.id} className="flex justify-between text-sm">
+                <span>{item.name} x{item.qty}</span>
+                <span>{formatGBP(item.subTotal)}</span>
+              </div>
+            ))}
+
+            <hr />
+
+            <div className="flex justify-between">
+              <span>Subtotal</span>
+              <span>{formatGBP(summary.subtotal)}</span>
             </div>
-          )}
 
-          <div className="flex justify-between text-lg font-bold pt-2">
-            <span>Total</span>
-            <span>{formatEUR(summary.total)}</span>
+            <div className="flex justify-between">
+              <span>Delivery</span>
+              <span>
+                {deliveryLoading
+                  ? "Calculating..."
+                  : formatGBP(deliveryFee)}
+              </span>
+            </div>
+
+            <div className="flex justify-between text-sm text-gray-500">
+              <span>Total Weight</span>
+              <span>{summary.totalWeightKg.toFixed(2)}kg</span>
+            </div>
+
+            <div className="flex justify-between font-bold text-lg">
+              <span>Total</span>
+              <span>{formatGBP(summary.total)}</span>
+            </div>
+
+            <button
+              onClick={handleStripeCheckout}
+              disabled={loading || !isFormValid}
+              className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg font-semibold disabled:opacity-50"
+            >
+              {loading ? "Processing..." : "Pay with Stripe"}
+            </button>
           </div>
-
-          <p className="text-xs text-gray-500">
-            You’ll be redirected to Stripe to complete payment securely.
-          </p>
-
-          <button
-            onClick={handleStripeCheckout}
-            disabled={loading || !isFormValid}
-            className="w-full bg-black hover:bg-gray-900 text-white py-3 rounded-lg font-semibold mb-3 disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {loading ? "Redirecting..." : "Pay with Card (Stripe)"}
-          </button>
-
-          <button
-            onClick={whatsappOrder}
-            className="w-full border border-green-500 text-green-600 py-3 rounded-lg font-semibold"
-          >
-            Order via WhatsApp
-          </button>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 }
