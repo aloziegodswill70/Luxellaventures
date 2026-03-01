@@ -21,8 +21,6 @@ function formatGBP(amount) {
   return `£${Number(amount || 0).toFixed(2)}`;
 }
 
-/* ================= COMPONENT ================= */
-
 export default function CheckoutPage() {
   const { cartItems } = useCart();
 
@@ -32,6 +30,7 @@ export default function CheckoutPage() {
   const [deliveryFee, setDeliveryFee] = useState(0);
   const [deliveryLoading, setDeliveryLoading] = useState(false);
   const [deliveryError, setDeliveryError] = useState("");
+  const [isEnglandVerified, setIsEnglandVerified] = useState(false);
 
   const [contact, setContact] = useState({
     fullName: "",
@@ -44,17 +43,13 @@ export default function CheckoutPage() {
     postalCode: "",
     cityTown: "",
     state: "",
-    country: "",
+    country: "England",
     agree: false,
   });
-
-  /* ---------------- HYDRATION ---------------- */
 
   useEffect(() => {
     setIsHydrated(true);
   }, []);
-
-  /* ---------------- HANDLERS ---------------- */
 
   const handleContactChange = (e) => {
     const { name, value } = e.target;
@@ -69,7 +64,9 @@ export default function CheckoutPage() {
     }));
   };
 
-  /* ---------------- DELIVERY ---------------- */
+  /* ===============================
+     DELIVERY + ENGLAND VALIDATION
+  =============================== */
 
   useEffect(() => {
     if (!isHydrated) return;
@@ -78,12 +75,14 @@ export default function CheckoutPage() {
       if (!shipping.postalCode.trim()) {
         setDeliveryFee(0);
         setDeliveryError("");
+        setIsEnglandVerified(false);
         return;
       }
 
       try {
         setDeliveryLoading(true);
         setDeliveryError("");
+        setIsEnglandVerified(false);
 
         const res = await fetch("/api/calculate-delivery", {
           method: "POST",
@@ -96,12 +95,15 @@ export default function CheckoutPage() {
         if (!res.ok) {
           setDeliveryFee(0);
           setDeliveryError(data.error || "Delivery unavailable");
+          setIsEnglandVerified(false);
         } else {
           setDeliveryFee(Number(data.deliveryFee || 0));
+          setIsEnglandVerified(true);
         }
       } catch {
         setDeliveryFee(0);
         setDeliveryError("Delivery calculation failed");
+        setIsEnglandVerified(false);
       } finally {
         setDeliveryLoading(false);
       }
@@ -121,13 +123,13 @@ export default function CheckoutPage() {
     if (!shipping.postalCode.trim()) missing.push("Postal Code");
     if (!shipping.cityTown.trim()) missing.push("City/Town");
     if (!shipping.state.trim()) missing.push("State");
-    if (!shipping.country.trim()) missing.push("Country");
     if (!shipping.agree) missing.push("Terms Agreement");
 
     return missing;
   }, [contact, shipping]);
 
-  const isFormValid = requiredMissing.length === 0;
+  const isFormValid =
+    requiredMissing.length === 0 && isEnglandVerified;
 
   /* ---------------- SUMMARY ---------------- */
 
@@ -153,23 +155,8 @@ export default function CheckoutPage() {
     return { lines, subtotal, totalWeightKg, total };
   }, [cartItems, deliveryFee]);
 
-  /* ---------------- STRIPE ---------------- */
-
   const handleStripeCheckout = async () => {
-    if (!isFormValid) {
-      alert(`Please complete: ${requiredMissing.join(", ")}`);
-      return;
-    }
-
-    if (!cartItems.length) {
-      alert("Your cart is empty.");
-      return;
-    }
-
-    if (deliveryError) {
-      alert("Delivery unavailable for this postcode.");
-      return;
-    }
+    if (!isFormValid) return;
 
     try {
       setLoading(true);
@@ -198,12 +185,14 @@ export default function CheckoutPage() {
     }
   };
 
-  /* ---------------- RENDER ---------------- */
-
   if (!isHydrated) return null;
 
   return (
     <div className="max-w-6xl mx-auto px-4 py-10 grid lg:grid-cols-2 gap-8">
+
+      <div className="lg:col-span-2 bg-green-100 border border-green-300 text-green-800 p-4 rounded text-sm font-medium text-center">
+        🇬🇧 Delivery Available in England Only
+      </div>
 
       {cartItems.length === 0 ? (
         <div className="text-center py-20 text-gray-500 w-full">
@@ -211,48 +200,27 @@ export default function CheckoutPage() {
         </div>
       ) : (
         <>
-          {/* LEFT SIDE — FORM */}
+          {/* LEFT SIDE (UNCHANGED) */}
           <div className="space-y-6">
-
             <h2 className="text-xl font-bold">Contact Information</h2>
 
-            <input
-              type="text"
-              name="fullName"
-              placeholder="Full Name"
-              value={contact.fullName}
-              onChange={handleContactChange}
-              className="w-full border p-3 rounded"
-            />
+            <input type="text" name="fullName" placeholder="Full Name"
+              value={contact.fullName} onChange={handleContactChange}
+              className="w-full border p-3 rounded" />
 
-            <input
-              type="text"
-              name="phone"
-              placeholder="Phone Number"
-              value={contact.phone}
-              onChange={handleContactChange}
-              className="w-full border p-3 rounded"
-            />
+            <input type="text" name="phone" placeholder="Phone Number"
+              value={contact.phone} onChange={handleContactChange}
+              className="w-full border p-3 rounded" />
 
-            <input
-              type="email"
-              name="email"
-              placeholder="Email (optional)"
-              value={contact.email}
-              onChange={handleContactChange}
-              className="w-full border p-3 rounded"
-            />
+            <input type="email" name="email" placeholder="Email (optional)"
+              value={contact.email} onChange={handleContactChange}
+              className="w-full border p-3 rounded" />
 
             <h2 className="text-xl font-bold pt-6">Shipping Address</h2>
 
-            <input
-              type="text"
-              name="address"
-              placeholder="Street Address"
-              value={shipping.address}
-              onChange={handleShippingChange}
-              className="w-full border p-3 rounded"
-            />
+            <input type="text" name="address" placeholder="Street Address"
+              value={shipping.address} onChange={handleShippingChange}
+              className="w-full border p-3 rounded" />
 
             <input
               type="text"
@@ -260,63 +228,57 @@ export default function CheckoutPage() {
               placeholder="Postal Code"
               value={shipping.postalCode}
               onChange={handleShippingChange}
-              className="w-full border p-3 rounded"
+              className={`w-full border p-3 rounded ${
+                deliveryError ? "border-red-500 bg-red-50" : ""
+              }`}
             />
 
             {deliveryLoading && (
-              <p className="text-sm text-gray-500">Calculating delivery...</p>
+              <p className="text-sm text-gray-500">Checking England delivery...</p>
+            )}
+
+            {isEnglandVerified && (
+              <p className="text-sm text-green-600">
+                ✓ England delivery confirmed
+              </p>
             )}
 
             {deliveryError && (
               <p className="text-sm text-red-500">{deliveryError}</p>
             )}
 
-            <input
-              type="text"
-              name="cityTown"
-              placeholder="City / Town"
-              value={shipping.cityTown}
-              onChange={handleShippingChange}
-              className="w-full border p-3 rounded"
-            />
+            <input type="text" name="cityTown" placeholder="City / Town"
+              value={shipping.cityTown} onChange={handleShippingChange}
+              className="w-full border p-3 rounded" />
 
-            <input
-              type="text"
-              name="state"
-              placeholder="State"
-              value={shipping.state}
-              onChange={handleShippingChange}
-              className="w-full border p-3 rounded"
-            />
+            <input type="text" name="state" placeholder="State"
+              value={shipping.state} onChange={handleShippingChange}
+              className="w-full border p-3 rounded" />
 
-            <input
-              type="text"
-              name="country"
-              placeholder="Country"
-              value={shipping.country}
-              onChange={handleShippingChange}
-              className="w-full border p-3 rounded"
-            />
+            <div className="bg-gray-100 p-3 rounded text-sm text-gray-700">
+              <span className="font-semibold">Delivery Region:</span> England 🇬🇧
+            </div>
 
             <label className="flex items-center gap-2 pt-4">
-              <input
-                type="checkbox"
-                name="agree"
+              <input type="checkbox" name="agree"
                 checked={shipping.agree}
-                onChange={handleShippingChange}
-              />
+                onChange={handleShippingChange} />
               I agree to the Terms & Conditions
             </label>
-
           </div>
 
-          {/* RIGHT SIDE — SUMMARY */}
+          {/* RIGHT SIDE */}
           <div className="border rounded-lg p-6 space-y-4 h-fit">
             <h2 className="text-xl font-bold">Order Summary</h2>
 
             {summary.lines.map((item) => (
               <div key={item.id} className="flex justify-between text-sm">
-                <span>{item.name} x{item.qty}</span>
+                <div>
+                  <span>{item.name} x{item.qty}</span>
+                  <div className="text-xs text-gray-500">
+                    {item.subWeightKg.toFixed(2)} kg
+                  </div>
+                </div>
                 <span>{formatGBP(item.subTotal)}</span>
               </div>
             ))}
@@ -328,18 +290,16 @@ export default function CheckoutPage() {
               <span>{formatGBP(summary.subtotal)}</span>
             </div>
 
+            <div className="flex justify-between text-sm text-gray-500">
+              <span>Total Weight</span>
+              <span>{summary.totalWeightKg.toFixed(2)} kg</span>
+            </div>
+
             <div className="flex justify-between">
               <span>Delivery</span>
               <span>
-                {deliveryLoading
-                  ? "Calculating..."
-                  : formatGBP(deliveryFee)}
+                {deliveryLoading ? "Checking..." : formatGBP(deliveryFee)}
               </span>
-            </div>
-
-            <div className="flex justify-between text-sm text-gray-500">
-              <span>Total Weight</span>
-              <span>{summary.totalWeightKg.toFixed(2)}kg</span>
             </div>
 
             <div className="flex justify-between font-bold text-lg">
@@ -350,7 +310,11 @@ export default function CheckoutPage() {
             <button
               onClick={handleStripeCheckout}
               disabled={loading || !isFormValid}
-              className="w-full bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg font-semibold disabled:opacity-50"
+              className={`w-full py-3 rounded-lg font-semibold transition ${
+                isFormValid
+                  ? "bg-orange-500 hover:bg-orange-600 text-white"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              }`}
             >
               {loading ? "Processing..." : "Pay with Stripe"}
             </button>

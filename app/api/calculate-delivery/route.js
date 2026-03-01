@@ -1,40 +1,18 @@
 // app/api/calculate-delivery/route.js
 
-/* ---------------- STORE LOCATION (SA2 0RB - Swansea) ---------------- */
-
-const STORE_LAT = 51.6208;
-const STORE_LNG = -3.9436;
+/* =========================================
+   🇬🇧 ENGLAND NATIONWIDE DELIVERY SYSTEM
+========================================= */
 
 /* ---------------- DELIVERY SETTINGS ---------------- */
 
-const BASE_FEE = 3; // £3 base delivery
-const PER_KM_RATE = 1; // £1 per km
-const MAX_DISTANCE_KM = 25; // Max delivery radius
+const FLAT_DELIVERY_FEE = 4.99; // Nationwide England delivery fee
 
 /* ---------------- VALIDATION ---------------- */
 
 function isValidUKPostcode(postcode) {
   const regex = /^[A-Z]{1,2}\d[A-Z\d]?\s?\d[A-Z]{2}$/i;
   return regex.test(postcode);
-}
-
-/* ---------------- DISTANCE CALCULATION ---------------- */
-
-function calculateDistance(lat1, lng1, lat2, lng2) {
-  const toRad = (value) => (value * Math.PI) / 180;
-  const R = 6371; // Earth radius in km
-
-  const dLat = toRad(lat2 - lat1);
-  const dLng = toRad(lng2 - lng1);
-
-  const a =
-    Math.sin(dLat / 2) ** 2 +
-    Math.cos(toRad(lat1)) *
-      Math.cos(toRad(lat2)) *
-      Math.sin(dLng / 2) ** 2;
-
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-  return R * c;
 }
 
 /* ---------------- API HANDLER ---------------- */
@@ -85,42 +63,23 @@ export async function POST(req) {
       );
     }
 
-    const { latitude, longitude } = data.result;
+    const { country } = data.result;
 
-    if (
-      typeof latitude !== "number" ||
-      typeof longitude !== "number"
-    ) {
+    /* ===============================
+       🔒 ENGLAND-ONLY RESTRICTION
+    =============================== */
+
+    if (country !== "England") {
       return Response.json(
-        { error: "Invalid postcode coordinates" },
-        { status: 400 }
-      );
-    }
-
-    /* ---------------- DISTANCE CHECK ---------------- */
-
-    const distance = calculateDistance(
-      STORE_LAT,
-      STORE_LNG,
-      latitude,
-      longitude
-    );
-
-    if (distance > MAX_DISTANCE_KM) {
-      return Response.json(
-        { error: "Delivery not available in your area" },
+        { error: "We currently deliver within England only." },
         { status: 403 }
       );
     }
 
-    /* ---------------- FEE CALCULATION ---------------- */
-
-    const deliveryFee =
-      BASE_FEE + distance * PER_KM_RATE;
+    /* ---------------- SUCCESS ---------------- */
 
     return Response.json({
-      distance: Number(distance.toFixed(2)),
-      deliveryFee: Number(deliveryFee.toFixed(2)),
+      deliveryFee: FLAT_DELIVERY_FEE,
     });
 
   } catch (error) {

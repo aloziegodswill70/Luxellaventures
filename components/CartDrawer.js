@@ -9,11 +9,9 @@ export default function CartDrawer() {
   const { cartItems, cartTotal, isCartOpen, setIsCartOpen, addToCart, removeFromCart } =
     useCart();
 
-  // ✅ Prevent hydration issues
   const [isHydrated, setIsHydrated] = useState(false);
   useEffect(() => setIsHydrated(true), []);
 
-  // Related items
   const relatedItems = useMemo(() => {
     if (!cartItems.length) return [];
     const cartIds = new Set(cartItems.map((c) => c.id));
@@ -34,15 +32,19 @@ export default function CartDrawer() {
 
   const whatsappLink = `https://wa.me/447344447897?text=${encodeURIComponent(whatsappMessage)}`;
 
-  if (!isHydrated) return null; // Render only on client
+  if (!isHydrated) return null;
 
   return (
     <>
-      {/* Overlay */}
-      {isCartOpen && <div className="fixed inset-0 bg-black/40 z-40" onClick={() => setIsCartOpen(false)} />}
+      {isCartOpen && (
+        <div
+          className="fixed inset-0 bg-black/40 z-40"
+          onClick={() => setIsCartOpen(false)}
+        />
+      )}
 
       <div
-        className={`fixed top-0 right-0 h-full w-[92vw] max-w-[360px] bg-white z-[9999] transform transition-transform duration-300 ${
+        className={`fixed top-0 right-0 h-full w-[92vw] max-w-[360px] bg-white z-[9999] transform transition-transform duration-300 flex flex-col ${
           isCartOpen ? "translate-x-0" : "translate-x-full"
         }`}
       >
@@ -56,55 +58,100 @@ export default function CartDrawer() {
         </button>
 
         {/* Header */}
-        <div className="flex justify-between items-center p-4 border-b pr-14">
+        <div className="flex justify-between items-center p-4 border-b pr-14 shrink-0">
           <h2 className="font-bold text-lg">Your Cart</h2>
         </div>
 
-        {/* Cart Items */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
-          {cartItems.length === 0 ? (
-            <p className="text-center text-gray-500 mt-10">Your cart is empty 🛒</p>
-          ) : (
-            cartItems.map((item) => (
-              <div key={item.id} className="flex justify-between items-center">
-                <div className="min-w-0 pr-3">
-                  <p className="font-medium text-sm truncate">{item.name}</p>
-                  <p className="text-xs text-gray-500">£{item.price.toFixed(2)}</p>
+        {/* Scrollable Content Area */}
+        <div className="flex-1 overflow-y-auto">
+
+          {/* Cart Items */}
+          <div className="p-4 space-y-4">
+            {cartItems.length === 0 ? (
+              <p className="text-center text-gray-500 mt-10">
+                Your cart is empty 🛒
+              </p>
+            ) : (
+              cartItems.map((item) => (
+                <div key={item.id} className="flex justify-between items-center">
+                  <div className="min-w-0 pr-3">
+                    <p className="font-medium text-sm truncate">
+                      {item.name}
+                    </p>
+                    <p className="text-xs text-gray-500">
+                      £{item.price.toFixed(2)}
+                    </p>
+                  </div>
+
+                  <div className="flex items-center gap-2 flex-shrink-0">
+                    <button
+                      onClick={() => removeFromCart(item.id)}
+                      className="w-7 h-7 bg-gray-200 rounded"
+                    >
+                      −
+                    </button>
+
+                    <span className="text-sm font-semibold w-5 text-center">
+                      {item.qty}
+                    </span>
+
+                    <button
+                      onClick={() => addToCart(item)}
+                      className="w-7 h-7 bg-orange-500 text-white rounded"
+                    >
+                      +
+                    </button>
+                  </div>
                 </div>
-                <div className="flex items-center gap-2 flex-shrink-0">
-                  <button onClick={() => removeFromCart(item.id)} className="w-7 h-7 bg-gray-200 rounded">
-                    −
+              ))
+            )}
+          </div>
+
+          {/* Related items */}
+          {cartItems.length > 0 && relatedItems.length > 0 && (
+            <div className="border-t px-4 py-4">
+              <h3 className="font-semibold text-sm mb-2">
+                You may also like
+              </h3>
+
+              <div className="grid grid-cols-3 gap-2">
+                {relatedItems.map((p) => (
+                  <button
+                    key={p.id}
+                    onClick={() => addToCart(p)}
+                    className="border rounded-lg p-2 hover:border-orange-300 transition"
+                  >
+                    <div className="relative w-full h-14 rounded-md overflow-hidden bg-gray-50">
+                      {p.image ? (
+                        <Image
+                          src={p.image}
+                          alt={p.name}
+                          fill
+                          className="object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-[10px] text-gray-400">
+                          No image
+                        </div>
+                      )}
+                    </div>
+
+                    <p className="mt-1 text-[11px] font-semibold line-clamp-2">
+                      {p.name}
+                    </p>
+
+                    <span className="text-[11px] font-bold text-green-700">
+                      £{p.price.toFixed(2)}
+                    </span>
                   </button>
-                  <span className="text-sm font-semibold w-5 text-center">{item.qty}</span>
-                  <button onClick={() => addToCart(item)} className="w-7 h-7 bg-orange-500 text-white rounded">
-                    +
-                  </button>
-                </div>
+                ))}
               </div>
-            ))
+            </div>
           )}
         </div>
 
-        {/* Related items */}
-        {cartItems.length > 0 && relatedItems.length > 0 && (
-          <div className="border-t px-4 py-4">
-            <h3 className="font-semibold text-sm mb-2">You may also like</h3>
-            <div className="grid grid-cols-3 gap-2">
-              {relatedItems.map((p) => (
-                <button key={p.id} onClick={() => addToCart(p)} className="border rounded-lg p-2 hover:border-orange-300 transition">
-                  <div className="relative w-full h-14 rounded-md overflow-hidden bg-gray-50">
-                    {p.image ? <Image src={p.image} alt={p.name} fill className="object-cover" /> : <div className="w-full h-full flex items-center justify-center text-[10px] text-gray-400">No image</div>}
-                  </div>
-                  <p className="mt-1 text-[11px] font-semibold line-clamp-2">{p.name}</p>
-                  <span className="text-[11px] font-bold text-green-700">£{p.price.toFixed(2)}</span>
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        {/* Footer */}
-        <div className="border-t p-4 space-y-3 pb-24">
+        {/* Footer (Always Visible) */}
+        <div className="border-t p-4 space-y-3 shrink-0 bg-white">
           <div className="flex justify-between font-bold">
             <span>Total</span>
             <span>£{cartTotal.toFixed(2)}</span>
@@ -114,7 +161,7 @@ export default function CartDrawer() {
             <button
               onClick={() => {
                 setIsCartOpen(false);
-                window.location.href = "/checkout"; // safe navigation
+                window.location.href = "/checkout";
               }}
               className="w-full text-center bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg font-semibold transition"
             >

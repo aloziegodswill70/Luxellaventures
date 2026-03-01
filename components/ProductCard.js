@@ -2,23 +2,29 @@
 
 import Image from "next/image";
 import { useCart } from "@/context/CartContext";
+import { useEffect, useState } from "react";
 
 export default function ProductCard({ product }) {
   const { cartItems, addToCart, removeFromCart, setIsCartOpen } = useCart();
 
-  const item = cartItems.find((i) => i.id === product.id);
-  const qty = item?.qty || 0;
+  // ✅ Hydration-safe qty state
+  const [qty, setQty] = useState(0);
+
+  useEffect(() => {
+    const item = cartItems.find((i) => i.id === product.id);
+    setQty(item?.qty || 0);
+  }, [cartItems, product.id]);
 
   const handleAdd = () => {
     addToCart(product);
-    setIsCartOpen(true); // 🔥 AUTO OPEN
+    setIsCartOpen(true); // 🔥 AUTO OPEN (unchanged)
   };
 
   // ✅ Supports new multi-image format + old single image format
   const mainImage =
     (Array.isArray(product?.images) && product.images[0]) ||
     product?.image ||
-    "/images/placeholder.png"; // add this image in /public/images if you want
+    "/images/placeholder.png";
 
   return (
     <div className="bg-white rounded-xl shadow-sm p-3">

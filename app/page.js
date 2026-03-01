@@ -3,13 +3,12 @@ import { Suspense } from "react";
 import InfoHeader from "@/components/InfoHeader";
 import Navbar from "@/components/Navbar";
 
-
-
 // ✅ SIMPLE HERO
 import SimpleHero from "@/components/home/SimpleHero";
 
-// ✅ SLIDERS ADDED BACK
+// ✅ SLIDERS
 import FreshVegPromoSlider from "@/components/home/FreshVegPromoSlider";
+import NewArrivalSlider from "@/components/NewArrivalSlider";
 import PromoDealsSlider from "@/components/PromoDealsSlider";
 
 import PromoBanners from "@/components/home/PromoBanners";
@@ -34,12 +33,23 @@ export default function Home() {
       <SimpleHero />
 
       {/* ✅ PROMO SLIDERS */}
-      <FreshVegPromoSlider />
-      <PromoDealsSlider />
+      <div className="animate-fadeInUp">
+        <FreshVegPromoSlider />
+      </div>
+
+      {/* ✅ NEW ARRIVALS */}
+      <div className="animate-fadeInUp delay-100">
+        <NewArrivalSlider />
+      </div>
+
+      <div className="animate-fadeInUp delay-200">
+        <PromoDealsSlider />
+      </div>
 
       {/* Core Selling Sections */}
       <HotDealsSection />
       <RecommendedForYouSection />
+
       <PopularThisWeekSection
         popularIds={[
           "egusi-whole",

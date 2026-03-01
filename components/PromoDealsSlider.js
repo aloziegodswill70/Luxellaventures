@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { useEffect, useState } from "react";
 
 const slides = [
   {
@@ -53,29 +52,19 @@ const slides = [
 ];
 
 export default function PromoDealsSlider() {
-  const [current, setCurrent] = useState(0);
-
-  // Auto slide every 4s
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % slides.length);
-    }, 4000);
-    return () => clearInterval(interval);
-  }, []);
-
   return (
-    <section className="w-full mt-6 px-4 overflow-hidden">
-      <div
-        className="flex transition-transform duration-700 ease-in-out"
-        style={{ transform: `translateX(-${current * 100}%)` }}
-      >
-        {slides.map((slide) => (
-          <div
-            key={slide.id}
-            className="flex-none w-1/2 sm:w-1/3 md:w-1/5 px-2"
-          >
-            <Link href="/new-products">
-              <div className="rounded-lg overflow-hidden shadow-lg bg-white flex flex-col">
+    <section className="w-full mt-6 px-4">
+      <div className="max-w-6xl mx-auto">
+
+        <h2 className="text-xl sm:text-2xl font-bold mb-4">
+          🔥 Promo Deals
+        </h2>
+
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-4">
+          {slides.map((slide) => (
+            <Link key={slide.id} href="/new-products">
+              <div className="rounded-lg overflow-hidden shadow-md bg-white flex flex-col hover:shadow-xl hover:-translate-y-1 transition-all duration-300 cursor-pointer">
+                
                 <div className="relative h-[150px] sm:h-[180px] md:h-[200px]">
                   <Image
                     src={slide.image}
@@ -83,30 +72,36 @@ export default function PromoDealsSlider() {
                     fill
                     className="object-cover"
                     sizes="(max-width: 640px) 50vw, (max-width: 768px) 33vw, 20vw"
-                    priority
                   />
                 </div>
-                <div className="p-2 text-center flex flex-col gap-1">
+
+                <div className="p-3 text-center flex flex-col gap-1">
                   <h3 className="text-gray-800 text-sm sm:text-base font-semibold">
                     {slide.title}
                   </h3>
+
                   <p className="text-gray-400 text-xs sm:text-sm line-through">
                     {slide.oldPrice}
                   </p>
-                  <p className="text-orange-500 text-sm sm:text-base font-bold">
-                    {slide.promoPrice}{" "}
-                    <span className="text-gray-500 text-xs">
-                      {slide.promoEnds}
-                    </span>
+
+                  <p className="text-orange-600 text-sm sm:text-base font-bold">
+                    {slide.promoPrice}
                   </p>
+
+                  <span className="text-gray-500 text-xs">
+                    {slide.promoEnds}
+                  </span>
+
                   <button className="mt-2 bg-orange-500 hover:bg-orange-600 text-white px-3 py-1 rounded-md text-xs sm:text-sm transition">
                     Shop Now
                   </button>
                 </div>
+
               </div>
             </Link>
-          </div>
-        ))}
+          ))}
+        </div>
+
       </div>
     </section>
   );

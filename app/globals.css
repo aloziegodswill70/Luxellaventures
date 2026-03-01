@@ -2,6 +2,19 @@
 @tailwind components;
 @tailwind utilities;
 
+/* ===============================
+   BASE STYLES
+================================= */
+
+html {
+  scroll-behavior: smooth; /* ✅ smooth scroll */
+}
+
+html,
+body {
+  background-color: #f9fafb;
+}
+
 body {
   @apply bg-surface text-dark;
 }
@@ -9,9 +22,10 @@ body {
 .container {
   @apply max-w-7xl mx-auto px-4;
 }
-html, body {
-  background-color: #f9fafb;
-}
+
+/* ===============================
+   BUTTON IMPROVEMENTS
+================================= */
 
 button {
   transition: all 0.2s ease;
@@ -20,6 +34,11 @@ button {
 button:active {
   transform: scale(0.97);
 }
+
+/* ===============================
+   FADE ANIMATIONS
+================================= */
+
 @keyframes fade {
   from {
     opacity: 0;
@@ -33,4 +52,35 @@ button:active {
 
 .animate-fade {
   animation: fade 0.25s ease-out;
+}
+
+/* ===============================
+   SMOOTH SECTION ANIMATION
+================================= */
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fadeInUp {
+  animation: fadeInUp 0.8s ease forwards;
+}
+
+.delay-100 {
+  animation-delay: 0.1s;
+}
+
+.delay-200 {
+  animation-delay: 0.2s;
+}
+
+.delay-300 {
+  animation-delay: 0.3s;
 }
