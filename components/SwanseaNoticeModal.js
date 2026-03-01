@@ -2,15 +2,15 @@
 
 import { useEffect, useState } from "react";
 
-export default function SwanseaNoticeModal() {
+export default function EnglandNoticeModal() {
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
-    const hasSeen = sessionStorage.getItem("SwanseaNoticeSeen");
+    const hasSeen = sessionStorage.getItem("EnglandNoticeSeen");
 
     if (!hasSeen) {
       setOpen(true);
-      sessionStorage.setItem("SwanseaNoticeSeen", "true");
+      sessionStorage.setItem("EnglandNoticeSeen", "true");
     }
   }, []);
 
@@ -24,8 +24,8 @@ export default function SwanseaNoticeModal() {
         </h2>
 
         <p className="text-gray-600 text-sm sm:text-base">
-          Deliveries are currently available within <strong>Swansea only</strong>.
-          Orders outside Swansea will not be processed.
+          Deliveries are currently available within <strong>England only</strong>.
+          Orders outside England will not be processed.
         </p>
 
         <button
